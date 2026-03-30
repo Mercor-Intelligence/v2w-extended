@@ -5,7 +5,7 @@
 ![Vision2Web](https://img.shields.io/badge/Dataset-Vision2Web-blue)
 <div align='center'>
 
-[[🏠 Project Page](https://vision2web-benchmark.github.io/)] [[📖 arXiv Paper](#)] [[📊 Dataset](#)] [[🏆 Leaderboard](https://huggingface.co/datasets/he-zh22/Vision2Web-leaderboard)] [[📮 Submit Results](https://huggingface.co/datasets/he-zh22/Vision2Web-leaderboard)]
+[[🏠 Project Page](https://vision2web-bench.github.io/)] [[📖 arXiv Paper](https://arxiv.org/abs/2603.26648)] [[📊 Dataset](https://huggingface.co/datasets/zai-org/Vision2Web)] [[📮 Submit Results](https://huggingface.co/datasets/zai-org/Vision2Web-Leaderboard)]
 
 </div>
 
@@ -97,7 +97,7 @@ Each task directory contains:
 
 ```bash
 # Clone repository
-git clone https://github.com/THUDM/Vision2Web.git
+git clone https://github.com/zai-org/Vision2Web.git
 cd Vision2Web
 
 # Install package
@@ -202,7 +202,7 @@ bash scripts/run_analysis.sh
 
 You can run evaluation locally to test your agent's performance. **Official leaderboard scores are evaluated by the maintainers** using the latest VLM Judge and GUI Agent.
 
-To submit to the leaderboard, you only need to submit your **inference outputs**. Please follow the submission guidelines in the [leaderboard repository](https://huggingface.co/datasets/he-zh22/Vision2Web-leaderboard).
+To submit to the leaderboard, you only need to submit your **inference outputs**. Please follow the submission guidelines in the [leaderboard repository](https://huggingface.co/datasets/zai-org/Vision2Web-Leaderboard).
 
 ## 📊 Experimental Results
 - Overall Performance
@@ -230,10 +230,13 @@ To submit to the leaderboard, you only need to submit your **inference outputs**
 If you find Vision2Web helpful for your research, please consider citing:
 
 ```bibtex
-@article{he2026vision2web,
-  title={Vision2Web: A Hierarchical Benchmark for Visual Website Development with Agent Verification},
-  author={He, Zehai and Hong, Wenyi and Yang, Zhen and Pan, Ziyang and Liu, Mingdao and Gu, Xiaotao and Tang, Jie},
-  journal={arXiv preprint},
-  year={2026}
+@misc{he2026vision2webhierarchicalbenchmarkvisual,
+      title={Vision2Web: A Hierarchical Benchmark for Visual Website Development with Agent Verification},
+      author={Zehai He and Wenyi Hong and Zhen Yang and Ziyang Pan and Mingdao Liu and Xiaotao Gu and Jie Tang},
+      year={2026},
+      eprint={2603.26648},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2603.26648},
 }
 ```
