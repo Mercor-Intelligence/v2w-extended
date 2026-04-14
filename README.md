@@ -46,7 +46,7 @@ Evaluation is conducted via a workflow-based agent verification paradigm that co
 
 ## 📊 Benchmark Statistics
 
-Vision2Web comprises **193 tasks** spanning 16 subcategories across 4 major domains (E-Commerce, SaaS, Content, and Public Service), supported by **918 prototype images** and **1,256 functional test cases**.
+Vision2Web comprises **193 tasks** spanning 16 subcategories across 4 major domains (E-Commerce, SaaS, Content, and Public Service), supported by **918 prototype images** and **1,255 functional test cases**.
 
 <table align="center">
 <tr>
