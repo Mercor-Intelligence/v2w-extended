@@ -19,6 +19,7 @@ Vision2Web is a comprehensive benchmark designed to evaluate multimodal coding a
 
 ## 🔥 News
 
+* **`2026.04.30`** 🎉 Vision2Web is accepted by ICML 2026 as a Spotlight Paper!
 * **`2026.03.30`** 🌟 We released Vision2Web with comprehensive evaluation tools and leaderboard!
 
 ## 👀 Introduction to Vision2Web
