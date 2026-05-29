@@ -128,12 +128,13 @@ class EvaluationEngine:
         return projects
 
     def _generate_container_name(self, result_project: Dict[str, Any]) -> str:
-        """Generate container name based on task, project, framework, and model"""
+        """Generate container name based on task, project, framework, model, and results dir"""
         task = result_project['task_type']
         project_name = result_project['name']
         framework = result_project['framework']
         model = result_project['model'].replace('/', '_').replace(':', '_')
-        return f"{task}_{project_name}_{framework}_{model}"
+        results_dir = self.config.results_dir.name
+        return f"{task}_{project_name}_{framework}_{model}_{results_dir}"
 
     async def evaluate_single_project(
         self,

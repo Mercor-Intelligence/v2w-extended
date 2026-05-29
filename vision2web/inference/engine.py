@@ -73,12 +73,15 @@ class InferenceEngine:
         """
         workspace.mkdir(parents=True, exist_ok=True)
 
-        # Copy prototypes directory only if requested
+        # Copy prototypes directory only if requested; always remove any
+        # leftover from a previous run to prevent silent contamination.
+        prototypes_dest = workspace / 'prototypes'
         if self.config.inference.use_prototypes and project.prototypes_dir.exists():
-            prototypes_dest = workspace / 'prototypes'
             if prototypes_dest.exists():
                 shutil.rmtree(prototypes_dest)
             shutil.copytree(project.prototypes_dir, prototypes_dest)
+        elif prototypes_dest.exists():
+            shutil.rmtree(prototypes_dest)
 
         # Copy resources directory if exists
         if project.resources_dir and project.resources_dir.exists():

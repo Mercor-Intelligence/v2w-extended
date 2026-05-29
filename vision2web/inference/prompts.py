@@ -408,8 +408,6 @@ def _get_website_prompt(use_prototypes: bool) -> str:
   - Visual hierarchy
 - Implement **all interactions** specified in the PRD"""
 
-        verification_line = "   - All pages and features function correctly"
-
         integration_line = "- Seed data must drive the UI as specified in the PRD"
 
         verification_line = ""
