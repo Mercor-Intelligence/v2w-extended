@@ -316,6 +316,15 @@ class InferenceEngine:
             self.logger.warning("No projects found!")
             return []
 
+        # Webpage tasks have no text specification — they require prototypes.
+        if not self.config.inference.use_prototypes:
+            webpage_projects = [p.name for p in projects if p.task_type == 'webpage']
+            if webpage_projects:
+                raise ValueError(
+                    f"Cannot run webpage tasks without prototypes: {webpage_projects}. "
+                    f"Add --use-prototypes or exclude webpage tasks."
+                )
+
         self.logger.info(f"Found {len(projects)} projects to process")
 
 
