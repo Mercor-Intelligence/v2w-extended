@@ -345,6 +345,7 @@ class ResultAnalyzer:
 
         # column widths
         w_rank = 3
+
         w_model = 42
         w_score = 8
 
@@ -421,3 +422,66 @@ class ResultAnalyzer:
             )
 
         print(sep)
+
+        # Per-task breakdown
+        self._print_task_breakdown(analysis)
+
+    def _print_task_breakdown(self, analysis: Dict[str, Any]):
+        """Print per-task, per-project score breakdown."""
+        results = analysis.get("results", {})
+
+        def avg(xs):
+            return sum(xs) / len(xs) if xs else 0.0
+
+        # Group results by task
+        by_task = defaultdict(list)
+        for key, value in results.items():
+            parts = key.split(':')
+            if len(parts) < 4:
+                continue
+            task = parts[0]
+            framework = parts[1]
+            model = parts[2]
+            project = ':'.join(parts[3:])
+            by_task[task].append((framework, model, project, value))
+
+        task_labels = {
+            'webpage':  'L1: Static Webpage',
+            'frontend': 'L2: Interactive Frontend',
+            'website':  'L3: Full-Stack Website',
+        }
+
+        for task in ['webpage', 'frontend', 'website']:
+            entries = by_task.get(task)
+            if not entries:
+                continue
+
+            label = task_labels[task]
+            print(f"\n{label}")
+            print("-" * 80)
+
+            has_func = task in ('frontend', 'website')
+
+            if has_func:
+                print(f"  {'Project':<30} {'Framework':<15} {'Model':<30} {'VS':>6} {'FS':>6} {'Success':>8}")
+            else:
+                print(f"  {'Project':<30} {'Framework':<15} {'Model':<30} {'Desktop':>8} {'Tablet':>8} {'Mobile':>8} {'VS':>6} {'Success':>8}")
+
+            print("  " + "-" * 78)
+
+            for framework, model, project, value in sorted(entries, key=lambda x: x[2]):
+                success = "Yes" if value.get("success") else "No"
+                proto_scores = value.get("prototypes", {})
+                proto_avg = avg(list(proto_scores.values())) * 100
+                func_scores = value.get("function", {})
+                func_avg = avg(list(func_scores.values())) * 100 if func_scores else 0.0
+
+                if has_func:
+                    print(f"  {project:<30} {framework:<15} {model:<30} {proto_avg:>6.1f} {func_avg:>6.1f} {success:>8}")
+                else:
+                    desktop = proto_scores.get('desktop', 0.0) * 100
+                    tablet  = proto_scores.get('tablet', 0.0) * 100
+                    mobile  = proto_scores.get('mobile', 0.0) * 100
+                    print(f"  {project:<30} {framework:<15} {model:<30} {desktop:>8.1f} {tablet:>8.1f} {mobile:>8.1f} {proto_avg:>6.1f} {success:>8}")
+
+            print()

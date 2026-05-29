@@ -125,8 +125,24 @@ async def main():
         cwd="/workspace",
         disallowed_tools=["EnterPlanMode", "ExitPlanMode", "AskUserQuestion", "Skill", "SlashCommand"],
     )
+
+    def _serialize(msg):
+        if hasattr(msg, 'model_dump'):
+            return msg.model_dump()
+        if hasattr(msg, '__dict__'):
+            return msg.__dict__
+        return str(msg)
+
+    trajectory = []
     async for msg in query(prompt=message_stream, options=options):
         print(str(msg), flush=True)
+        try:
+            trajectory.append(_serialize(msg))
+        except Exception as e:
+            trajectory.append({{"error": str(e), "raw": str(msg)}})
+
+    with open('/workspace/trajectory.json', 'w', encoding='utf-8') as f:
+        json.dump(trajectory, f, indent=2, default=str, ensure_ascii=False)
 
 asyncio.run(main())
 '''

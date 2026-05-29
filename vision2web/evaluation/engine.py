@@ -280,7 +280,7 @@ class EvaluationEngine:
 
                 stdout, stderr = await proc.communicate()
 
-                if proc.returncode == 0 and stdout and stdout.strip():
+                if proc.returncode == 0:
                     elapsed = time.time() - start_time
                     self.logger.info(f"Port {port} is available after {elapsed:.1f}s")
                     return True
@@ -364,7 +364,7 @@ class EvaluationEngine:
         self.logger.info("Copying prototypes from dataset to container...")
         prototypes_copy_cmd = [
             "docker", "cp",
-            str(dataset_project.prototypes_dir),
+            str(dataset_project.prototypes_dir) + "/.",
             f"{container_id}:/workspace/prototypes"
         ]
         prototypes_proc = await asyncio.create_subprocess_exec(
