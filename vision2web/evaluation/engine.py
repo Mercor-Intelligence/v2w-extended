@@ -115,16 +115,14 @@ class EvaluationEngine:
                             self.logger.info(f"Skipping project {project_dir.name}: start script not exists")
                             continue
 
-                        # Check if project has necessary files (at least prototypes)
-                        if (project_dir / 'prototypes').exists():
-                            projects.append({
-                                'name': project_dir.name,
-                                'task_type': task,
-                                'framework': framework_dir.name,
-                                'model': model_dir.name,
-                                'path': project_dir,
-                                'workspace': project_dir
-                            })
+                        projects.append({
+                            'name': project_dir.name,
+                            'task_type': task,
+                            'framework': framework_dir.name,
+                            'model': model_dir.name,
+                            'path': project_dir,
+                            'workspace': project_dir
+                        })
 
         self.logger.info(f"Found {len(projects)} inference results")
         return projects
@@ -355,6 +353,22 @@ class EvaluationEngine:
             raise RuntimeError("Service failed to start: port 3000 not available")
 
         self.logger.info("Project deployed successfully and service is ready")
+
+        # Copy prototypes from the source dataset into the container so prototype
+        # comparison always works, regardless of whether --use-prototypes was set
+        # during inference.
+        self.logger.info("Copying prototypes from dataset to container...")
+        prototypes_copy_cmd = [
+            "docker", "cp",
+            str(dataset_project.prototypes_dir),
+            f"{container_id}:/workspace/prototypes"
+        ]
+        prototypes_proc = await asyncio.create_subprocess_exec(
+            *prototypes_copy_cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        await prototypes_proc.communicate()
 
         # Save workflow data as JSON file in workspace
         workflow_json_path = workspace / 'workflow.json'

@@ -73,11 +73,12 @@ class InferenceEngine:
         """
         workspace.mkdir(parents=True, exist_ok=True)
 
-        # Copy prototypes directory
-        prototypes_dest = workspace / 'prototypes'
-        if prototypes_dest.exists():
-            shutil.rmtree(prototypes_dest)
-        shutil.copytree(project.prototypes_dir, prototypes_dest)
+        # Copy prototypes directory only if requested
+        if self.config.inference.use_prototypes and project.prototypes_dir.exists():
+            prototypes_dest = workspace / 'prototypes'
+            if prototypes_dest.exists():
+                shutil.rmtree(prototypes_dest)
+            shutil.copytree(project.prototypes_dir, prototypes_dest)
 
         # Copy resources directory if exists
         if project.resources_dir and project.resources_dir.exists():
@@ -115,7 +116,8 @@ class InferenceEngine:
 
     def _generate_container_name(self, project: Project) -> str:
         """Generate container name based on task, project, framework, and model"""
-        return f"{project.task_type}_{project.name}_{self.config.inference.framework}_{self.config.inference.model.replace('/', '_').replace(':', '_')}"
+        proto = "prototypes" if self.config.inference.use_prototypes else "no_prototypes"
+        return f"{project.task_type}_{project.name}_{self.config.inference.framework}_{self.config.inference.model.replace('/', '_').replace(':', '_')}_{proto}"
 
     async def run_single_project(self, project: Project) -> Dict[str, Any]:
         """
@@ -162,7 +164,7 @@ class InferenceEngine:
                 await self.sandbox_manager.start_container(workspace)
 
             # Get appropriate prompt for task type
-            prompt = get_prompt_for_task(project.task_type)
+            prompt = get_prompt_for_task(project.task_type, use_prototypes=self.config.inference.use_prototypes)
 
             # Retry loop
             for attempt in range(1, max_attempts + 1):
@@ -278,32 +280,33 @@ class InferenceEngine:
 
     async def run_all_projects(
         self,
-        project_names: Optional[List[str]] = None,
-        task_type: Optional[str] = None
+        projects: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
         """
         Run inference on all projects (or specified subset).
 
         Args:
-            project_names: Optional list of project names to run
-                          (if None, run all projects)
-            task_type: Optional filter for specific task type
+            projects: Optional list of project specifiers in task_type/project_name
+                      format (e.g. ['webpage/abc', 'frontend/my-project']).
+                      If None, all projects across all task types are run.
 
         Returns:
             List of result dictionaries
         """
         # Discover projects
         self.logger.info(f"Discovering projects in {self.config.datasets_dir}")
-        all_projects = self.dataset_manager.discover_projects(task_type=task_type)
 
-        # Filter projects if specified
-        if project_names:
-            projects = [p for p in all_projects if p.name in project_names]
-            if len(projects) < len(project_names):
-                found_names = {p.name for p in projects}
-                missing = set(project_names) - found_names
-                self.logger.warning(f"Projects not found: {missing}")
+        if projects:
+            # Parse task_type/project_name specifiers and filter to exact matches
+            wanted = {(s.split('/')[0], s.split('/')[1]) for s in projects}
+            task_types = list({task for task, _ in wanted})
+            all_projects = self.dataset_manager.discover_projects(task_types=task_types)
+            projects = [p for p in all_projects if (p.task_type, p.name) in wanted]
+            missing = wanted - {(p.task_type, p.name) for p in projects}
+            if missing:
+                self.logger.warning(f"Projects not found: {[f'{t}/{n}' for t, n in missing]}")
         else:
+            all_projects = self.dataset_manager.discover_projects()
             projects = all_projects
 
         if not projects:
@@ -311,6 +314,7 @@ class InferenceEngine:
             return []
 
         self.logger.info(f"Found {len(projects)} projects to process")
+
 
         # Check sandbox image
         self.logger.info(f"Checking sandbox image: {self.sandbox_manager.image_name}")
@@ -359,7 +363,7 @@ class InferenceEngine:
                 'framework': self.config.inference.framework,
                 'model': self.config.inference.model,
                 'max_workers': self.config.inference.max_workers,
-                'task_type': task_type,
+                'projects': [f"{p.task_type}/{p.name}" for p in projects] if projects else 'all',
             },
             'results': valid_results
         }

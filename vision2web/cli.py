@@ -34,14 +34,33 @@ def cli():
               default='./results', help='Results output directory')
 @click.option('--max-workers', type=int, default=5,
               help='Maximum concurrent workers')
-@click.option('--task', type=click.Choice(['webpage', 'frontend', 'website']),
-              help='Task type to run (default: all)')
-@click.option('--projects', multiple=True, help='Specific projects to run (default: all)')
+@click.option('--projects', default=None,
+              metavar='TASK/NAME,...',
+              help='Comma-separated projects to run as task_type/project_name '
+                   '(e.g. webpage/abc,frontend/my-project). Default: all projects.')
+@click.option('--use-prototypes', is_flag=True, default=False,
+              help='Pass prototype images to the agent during inference')
 def inference(framework, model, api_key, base_url, sandbox_image, datasets_dir,
-              results_dir, max_workers, task, projects):
+              results_dir, max_workers, projects, use_prototypes):
     """Run inference phase to generate projects from specifications"""
 
     logger = setup_logger('vision2web', level='INFO')
+
+    # Validate and parse project specifiers
+    valid_tasks = {'webpage', 'frontend', 'website'}
+    project_list = None
+    if projects:
+        project_list = []
+        for spec in projects.split(','):
+            spec = spec.strip()
+            parts = spec.split('/', 1)
+            if len(parts) != 2 or parts[0] not in valid_tasks:
+                raise click.BadParameter(
+                    f"'{spec}' is not valid. Use task_type/project_name "
+                    f"where task_type is one of: {', '.join(sorted(valid_tasks))}",
+                    param_hint='--projects'
+                )
+            project_list.append(spec)
 
     # Create config
     config = Config()
@@ -53,7 +72,7 @@ def inference(framework, model, api_key, base_url, sandbox_image, datasets_dir,
     config.inference.api_key = api_key
     config.inference.base_url = base_url
     config.inference.max_workers = max_workers
-    config.inference.task = task
+    config.inference.use_prototypes = use_prototypes
     config.ensure_dirs()
 
     # Log configuration
@@ -63,8 +82,9 @@ def inference(framework, model, api_key, base_url, sandbox_image, datasets_dir,
     logger.info(f"Framework: {framework}")
     logger.info(f"Model: {model}")
     logger.info(f"Sandbox: {sandbox_image}")
-    logger.info(f"Task type: {task or 'all'}")
+    logger.info(f"Projects: {', '.join(project_list) if project_list else 'all'}")
     logger.info(f"Max workers: {max_workers}")
+    logger.info(f"Use prototypes: {use_prototypes}")
     logger.info(f"Datasets: {datasets_dir}")
     logger.info(f"Results: {results_dir}")
     logger.info("=" * 60)
@@ -73,10 +93,8 @@ def inference(framework, model, api_key, base_url, sandbox_image, datasets_dir,
 
     # Run inference
     try:
-        project_list = list(projects) if projects else None
         results = asyncio.run(engine.run_all_projects(
-            project_names=project_list,
-            task_type=task
+            projects=project_list
         ))
 
         # Print summary
