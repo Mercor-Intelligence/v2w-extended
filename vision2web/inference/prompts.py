@@ -570,7 +570,7 @@ Deliverables include:
 {hard_constraints}"""
 
 
-def get_prompt_for_task(task_type: str, use_prototypes: bool = True) -> str:
+def get_prompt_for_task(task_type: str, use_prototypes: bool = False) -> str:
     """
     Get the appropriate prompt for a task type.
 

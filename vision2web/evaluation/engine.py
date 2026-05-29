@@ -213,7 +213,6 @@ class EvaluationEngine:
             if container_id:
                 try:
                     self.logger.info(f"Copying test results from container for {project_name}...")
-                    # Copy only test_results directory from container to host
                     test_results_dir = workspace / 'test_results'
                     await self.sandbox_manager.copy_from_container(
                         workspace=workspace,
@@ -222,6 +221,15 @@ class EvaluationEngine:
                         host_path=test_results_dir
                     )
                     self.logger.info(f"Test results copied successfully.")
+
+                    # Copy evaluation logs so API errors are visible on the host
+                    eval_logs_dir = workspace / 'eval_logs'
+                    await self.sandbox_manager.copy_from_container(
+                        workspace=workspace,
+                        container_id=container_id,
+                        container_path="/workspace/logs",
+                        host_path=eval_logs_dir
+                    )
 
                     # Stop and remove container
                     self.logger.info(f"Stopping and removing container for {project_name}...")
@@ -369,7 +377,11 @@ class EvaluationEngine:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
-        await prototypes_proc.communicate()
+        _, proto_stderr = await prototypes_proc.communicate()
+        if prototypes_proc.returncode != 0:
+            raise RuntimeError(
+                f"Failed to copy prototypes to container: {proto_stderr.decode().strip()}"
+            )
 
         # Save workflow data as JSON file in workspace
         workflow_json_path = workspace / 'workflow.json'
@@ -647,7 +659,8 @@ if __name__ == "__main__":
         results_dir: Optional[Path] = None,
         task_type: Optional[str] = None,
         framework: Optional[str] = None,
-        model: Optional[str] = None
+        model: Optional[str] = None,
+        projects: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
         """
         Evaluate all inference results.
@@ -657,6 +670,9 @@ if __name__ == "__main__":
             task_type: Optional task type filter
             framework: Optional framework filter
             model: Optional model filter
+            projects: Optional list of project specifiers in task_type/project_name
+                      format (e.g. ['webpage/aws', 'frontend/1daycloud']).
+                      If None, all discovered results are evaluated.
 
         Returns:
             List of evaluation results
@@ -670,6 +686,17 @@ if __name__ == "__main__":
             framework=framework,
             model=model
         )
+
+        # Filter to specific projects if requested
+        if projects:
+            wanted = {(s.split('/')[0], s.split('/')[1]) for s in projects}
+            result_projects = [
+                p for p in result_projects
+                if (p['task_type'], p['name']) in wanted
+            ]
+            missing = wanted - {(p['task_type'], p['name']) for p in result_projects}
+            if missing:
+                self.logger.warning(f"Projects not found in results: {[f'{t}/{n}' for t, n in missing]}")
 
         if not result_projects:
             self.logger.warning("No inference results found")

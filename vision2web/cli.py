@@ -157,11 +157,30 @@ def inference(framework, model, api_key, base_url, sandbox_image, datasets_dir,
               help='Task type to evaluate (default: all)')
 @click.option('--framework', help='Framework to evaluate (default: all)')
 @click.option('--model', 'eval_model_filter', help='Inference model to evaluate (default: all)')
+@click.option('--projects', default=None, metavar='TASK/NAME,...',
+              help='Comma-separated projects to evaluate as task_type/project_name '
+                   '(e.g. webpage/aws,frontend/1daycloud). Default: all projects.')
 def evaluate(results_dir, datasets_dir, sandbox_image, api_key, base_url,
-             gui_agent_model, vlm_judge_model, max_workers, task, framework, eval_model_filter):
+             gui_agent_model, vlm_judge_model, max_workers, task, framework, eval_model_filter, projects):
     """Run evaluation phase to test generated projects"""
 
     logger = setup_logger('vision2web', level='INFO')
+
+    # Validate and parse project specifiers
+    valid_tasks = {'webpage', 'frontend', 'website'}
+    project_list = None
+    if projects:
+        project_list = []
+        for spec in projects.split(','):
+            spec = spec.strip()
+            parts = spec.split('/', 1)
+            if len(parts) != 2 or parts[0] not in valid_tasks:
+                raise click.BadParameter(
+                    f"'{spec}' is not valid. Use task_type/project_name "
+                    f"where task_type is one of: {', '.join(sorted(valid_tasks))}",
+                    param_hint='--projects'
+                )
+            project_list.append(spec)
 
     # Create config
     config = Config()
@@ -185,6 +204,7 @@ def evaluate(results_dir, datasets_dir, sandbox_image, api_key, base_url,
     logger.info(f"Datasets: {datasets_dir}")
     logger.info(f"GUI Agent model: {gui_agent_model}")
     logger.info(f"VLM Judge model: {vlm_judge_model}")
+    logger.info(f"Projects: {', '.join(project_list) if project_list else 'all'}")
     logger.info(f"Task type: {task or 'all'}")
     logger.info(f"Framework: {framework or 'all'}")
     logger.info(f"Inference model filter: {eval_model_filter or 'all'}")
@@ -198,7 +218,8 @@ def evaluate(results_dir, datasets_dir, sandbox_image, api_key, base_url,
         results = asyncio.run(engine.evaluate_all_projects(
             task_type=task,
             framework=framework,
-            model=eval_model_filter
+            model=eval_model_filter,
+            projects=project_list
         ))
 
         # Print summary
