@@ -105,37 +105,31 @@ class EvaluationEngine:
                         if not project_dir.is_dir() or project_dir.name.startswith('.'):
                             continue
 
-                        # Check if evaluation_result.json already exists
-                        result_file = project_dir / 'evaluation_result.json'
-                        if result_file.exists():
-                            self.logger.info(f"Skipping project {project_dir.name}: evaluation_result.json already exists")
-                            continue
                         script_file = project_dir / 'start.sh'
                         if not script_file.exists():
                             self.logger.info(f"Skipping project {project_dir.name}: start script not exists")
                             continue
 
-                        # Check if project has necessary files (at least prototypes)
-                        if (project_dir / 'prototypes').exists():
-                            projects.append({
-                                'name': project_dir.name,
-                                'task_type': task,
-                                'framework': framework_dir.name,
-                                'model': model_dir.name,
-                                'path': project_dir,
-                                'workspace': project_dir
-                            })
+                        projects.append({
+                            'name': project_dir.name,
+                            'task_type': task,
+                            'framework': framework_dir.name,
+                            'model': model_dir.name,
+                            'path': project_dir,
+                            'workspace': project_dir
+                        })
 
         self.logger.info(f"Found {len(projects)} inference results")
         return projects
 
     def _generate_container_name(self, result_project: Dict[str, Any]) -> str:
-        """Generate container name based on task, project, framework, and model"""
+        """Generate container name based on task, project, framework, model, and results dir"""
         task = result_project['task_type']
         project_name = result_project['name']
         framework = result_project['framework']
         model = result_project['model'].replace('/', '_').replace(':', '_')
-        return f"{task}_{project_name}_{framework}_{model}"
+        results_dir = self.config.results_dir.name
+        return f"{task}_{project_name}_{framework}_{model}_{results_dir}"
 
     async def evaluate_single_project(
         self,
@@ -214,7 +208,6 @@ class EvaluationEngine:
             if container_id:
                 try:
                     self.logger.info(f"Copying test results from container for {project_name}...")
-                    # Copy only test_results directory from container to host
                     test_results_dir = workspace / 'test_results'
                     await self.sandbox_manager.copy_from_container(
                         workspace=workspace,
@@ -223,6 +216,15 @@ class EvaluationEngine:
                         host_path=test_results_dir
                     )
                     self.logger.info(f"Test results copied successfully.")
+
+                    # Copy evaluation logs so API errors are visible on the host
+                    eval_logs_dir = workspace / 'eval_logs'
+                    await self.sandbox_manager.copy_from_container(
+                        workspace=workspace,
+                        container_id=container_id,
+                        container_path="/workspace/logs",
+                        host_path=eval_logs_dir
+                    )
 
                     # Stop and remove container
                     self.logger.info(f"Stopping and removing container for {project_name}...")
@@ -278,7 +280,7 @@ class EvaluationEngine:
 
                 stdout, stderr = await proc.communicate()
 
-                if proc.returncode == 0 and stdout and stdout.strip():
+                if proc.returncode == 0:
                     elapsed = time.time() - start_time
                     self.logger.info(f"Port {port} is available after {elapsed:.1f}s")
                     return True
@@ -355,6 +357,26 @@ class EvaluationEngine:
             raise RuntimeError("Service failed to start: port 3000 not available")
 
         self.logger.info("Project deployed successfully and service is ready")
+
+        # Copy prototypes from the source dataset into the container so prototype
+        # comparison always works, regardless of whether --use-prototypes was set
+        # during inference.
+        self.logger.info("Copying prototypes from dataset to container...")
+        prototypes_copy_cmd = [
+            "docker", "cp",
+            str(dataset_project.prototypes_dir) + "/.",
+            f"{container_id}:/workspace/prototypes"
+        ]
+        prototypes_proc = await asyncio.create_subprocess_exec(
+            *prototypes_copy_cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        _, proto_stderr = await prototypes_proc.communicate()
+        if prototypes_proc.returncode != 0:
+            raise RuntimeError(
+                f"Failed to copy prototypes to container: {proto_stderr.decode().strip()}"
+            )
 
         # Save workflow data as JSON file in workspace
         workflow_json_path = workspace / 'workflow.json'
@@ -632,7 +654,8 @@ if __name__ == "__main__":
         results_dir: Optional[Path] = None,
         task_type: Optional[str] = None,
         framework: Optional[str] = None,
-        model: Optional[str] = None
+        model: Optional[str] = None,
+        projects: Optional[List[str]] = None,
     ) -> List[Dict[str, Any]]:
         """
         Evaluate all inference results.
@@ -642,6 +665,9 @@ if __name__ == "__main__":
             task_type: Optional task type filter
             framework: Optional framework filter
             model: Optional model filter
+            projects: Optional list of project specifiers in task_type/project_name
+                      format (e.g. ['webpage/aws', 'frontend/1daycloud']).
+                      If None, all discovered results are evaluated.
 
         Returns:
             List of evaluation results
@@ -655,6 +681,17 @@ if __name__ == "__main__":
             framework=framework,
             model=model
         )
+
+        # Filter to specific projects if requested
+        if projects:
+            wanted = {(s.split('/')[0], s.split('/')[1]) for s in projects}
+            result_projects = [
+                p for p in result_projects
+                if (p['task_type'], p['name']) in wanted
+            ]
+            missing = wanted - {(p['task_type'], p['name']) for p in result_projects}
+            if missing:
+                self.logger.warning(f"Projects not found in results: {[f'{t}/{n}' for t, n in missing]}")
 
         if not result_projects:
             self.logger.warning("No inference results found")

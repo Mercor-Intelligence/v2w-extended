@@ -24,6 +24,7 @@ class InferenceConfig:
     timeout: int = 3600  # seconds
     task: Optional[str] = None  # webpage, frontend, or website
     max_retries: int = 2  # maximum number of retries on failure (total attempts = 1 + max_retries)
+    use_prototypes: bool = False
 
 
 @dataclass

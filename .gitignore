@@ -50,11 +50,13 @@ dmypy.json
 # Results and logs
 datasets/
 results/
+results_*/
 logs/
 *.log
 
 # Config files with secrets
 config.yaml
+litellm_config.yaml
 *.secret
 
 # Temporary files

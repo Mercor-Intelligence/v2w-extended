@@ -57,12 +57,13 @@ class DatasetManager:
         """
         self.datasets_dir = Path(datasets_dir)
 
-    def discover_projects(self, task_type: Optional[str] = None) -> List[Project]:
+    def discover_projects(self, task_types: Optional[List[str]] = None) -> List[Project]:
         """
         Discover all projects in the datasets directory.
 
         Args:
-            task_type: Optional filter for specific task type (webpage, frontend, website)
+            task_types: Optional list of task types to filter by
+                        (e.g. ['webpage', 'frontend']). If None, all three are scanned.
 
         Returns:
             List of Project instances
@@ -93,7 +94,7 @@ class DatasetManager:
             return projects
 
         # Task types to scan
-        task_types = [task_type] if task_type else ['webpage', 'frontend', 'website']
+        task_types = task_types if task_types else ['webpage', 'frontend', 'website']
 
         for task in task_types:
             task_dir = self.datasets_dir / task
@@ -147,7 +148,7 @@ class DatasetManager:
         Returns:
             Project instance or None if not found
         """
-        projects = self.discover_projects(task_type=task_type)
+        projects = self.discover_projects(task_types=[task_type] if task_type else None)
         for project in projects:
             if project.name == project_name:
                 return project

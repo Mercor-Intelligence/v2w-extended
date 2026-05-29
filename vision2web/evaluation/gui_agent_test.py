@@ -16,6 +16,23 @@ from openai import OpenAI
 
 from vision2web.evaluation.prompts import GUI_PROMPT, PROTOTYPE_PROMPT
 
+def _detect_image_mime(base64_str: str) -> str:
+    """Detect image MIME type from base64 data magic bytes."""
+    try:
+        header = base64.b64decode(base64_str[:16])
+        if header[:2] == b'\xff\xd8':
+            return 'image/jpeg'
+        if header[:8] == b'\x89PNG\r\n\x1a\n':
+            return 'image/png'
+        if header[:4] == b'GIF8':
+            return 'image/gif'
+        if header[:4] == b'RIFF' and header[8:12] == b'WEBP':
+            return 'image/webp'
+    except Exception:
+        pass
+    return 'image/png'
+
+
 def resize_base64_image(base64_str: str, scale: float = 0.5) -> str:
     """Resize a base64 encoded image
 
@@ -633,7 +650,7 @@ class GUIAgentTester:
                     content.append({
                         'type': 'image_url',
                         'image_url': {
-                            'url': f"data:image/png;base64,{images[placeholder]}"
+                            'url': f"data:{_detect_image_mime(images[placeholder])};base64,{images[placeholder]}"
                         }
                     })
                 else:

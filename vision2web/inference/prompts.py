@@ -1,19 +1,9 @@
 """Prompts for different task types in Vision2Web"""
 
-# Prompt for webpage task (static single-page website)
-WEBPAGE_PROMPT = """You are a **senior front-end engineer with extensive experience in webpage development**.
 
-Your responsibility is to **methodically implement and deploy a complete, production-ready static single-page website** strictly in accordance with the provided materials in the current working directory.
-You are required to **follow the instructions continuously until the website is fully operational**.
-**No clarifications or approvals should be sought, and no steps should be omitted prematurely.**
-
----
-
-## I. Input Materials
-
-The development artifacts provided for this task include:
-
-1. **Prototype Images**
+def _get_webpage_prompt(use_prototypes: bool) -> str:
+    if use_prototypes:
+        input_materials = """1. **Prototype Images**
    - Location: `/workspace/prototypes/*.jpg`
    - Purpose:
      - Define page layout and UI structure
@@ -29,7 +19,57 @@ The development artifacts provided for this task include:
 3. **Resolution Information**
    - 1920x1,080 pixels (desktop)
    - 1024x768 pixels (tablet)
-   - 375x812 pixels (mobile)
+   - 375x812 pixels (mobile)"""
+
+        implementation_visuals = """- **Strictly replicate prototype visuals**, including:
+  - Exact layout and spacing measurements
+  - Typography (fonts, sizes, weights, line heights)
+  - Color scheme (exact color codes)
+  - Visual hierarchy and element positioning"""
+
+        verification_line = "   - All sections display correctly and match prototypes pixel-perfectly"
+
+        hard_constraints = """- Do **not** assume unspecified requirements
+- Do **not** skip any feature or section visible in prototypes
+- Do **not** merge, remove, or invent sections not shown in prototypes
+- **The system must be fully reproducible by running `bash /workspace/start.sh` in a clean container**
+- **The website must be accessible at exactly `http://localhost:3000` after deployment**"""
+    else:
+        input_materials = """1. **Resource Files**
+   - Location: `/workspace/resources/**/*`
+   - Includes images, videos, icons, fonts, and other assets
+   - Must be utilized wherever relevant
+
+2. **Resolution Information**
+   - 1920x1,080 pixels (desktop)
+   - 1024x768 pixels (tablet)
+   - 375x812 pixels (mobile)"""
+
+        implementation_visuals = """- **Implement a complete, polished visual design**, including:
+  - Consistent layout and spacing
+  - Typography (fonts, sizes, weights, line heights)
+  - Color scheme
+  - Visual hierarchy and element positioning"""
+
+        verification_line = "   - All sections display correctly"
+
+        hard_constraints = """- Do **not** assume unspecified requirements
+- **The system must be fully reproducible by running `bash /workspace/start.sh` in a clean container**
+- **The website must be accessible at exactly `http://localhost:3000` after deployment**"""
+
+    return f"""You are a **senior front-end engineer with extensive experience in webpage development**.
+
+Your responsibility is to **methodically implement and deploy a complete, production-ready static single-page website** strictly in accordance with the provided materials in the current working directory.
+You are required to **follow the instructions continuously until the website is fully operational**.
+**No clarifications or approvals should be sought, and no steps should be omitted prematurely.**
+
+---
+
+## I. Input Materials
+
+The development artifacts provided for this task include:
+
+{input_materials}
 
 ---
 
@@ -40,11 +80,7 @@ The following workflow must be **strictly adhered to in the specified order**.
 ### Step 1: Implementation
 
 #### Static Website Development
-- **Strictly replicate prototype visuals**, including:
-  - Exact layout and spacing measurements
-  - Typography (fonts, sizes, weights, line heights)
-  - Color scheme (exact color codes)
-  - Visual hierarchy and element positioning
+{implementation_visuals}
 
 - **Use actual resource files** from `/workspace/resources/`:
   - Reference images using relative paths
@@ -67,7 +103,7 @@ The following workflow must be **strictly adhered to in the specified order**.
 
 1. Test the website locally to verify:
    - The website is accessible at `http://localhost:3000`
-   - All sections display correctly and match prototypes pixel-perfectly
+{verification_line}
    - All interactive elements function as expected
    - Resource files load correctly
    - Responsive behavior works (if applicable)
@@ -118,27 +154,12 @@ Deliverables include:
 
 ## IV. Hard Constraints
 
-- Do **not** assume unspecified requirements
-- Do **not** skip any feature or section visible in prototypes
-- Do **not** merge, remove, or invent sections not shown in prototypes
-- **The system must be fully reproducible by running `bash /workspace/start.sh` in a clean container**
-- **The website must be accessible at exactly `http://localhost:3000` after deployment**"""
+{hard_constraints}"""
 
 
-# Prompt for frontend task (interactive front-end application)
-FRONTEND_PROMPT = """You are a **senior front-end engineer with extensive experience in interactive frontend development**.
-
-Your responsibility is to **methodically implement and deploy a complete, interactive front-end application** strictly in accordance with the provided materials in the current working directory.  
-You are required to **follow the instructions continuously until the application is fully operational**.  
-**No clarifications or approvals should be sought, and no steps should be omitted prematurely.**
-
----
-
-## I. Input Materials
-
-The development artifacts provided for this task include:
-
-1. **Task Description**
+def _get_frontend_prompt(use_prototypes: bool) -> str:
+    if use_prototypes:
+        input_materials = """1. **Task Description**
    - Location: `/workspace/prompt.txt`
    - Contains the specific requirements and functionality to implement
 
@@ -150,10 +171,65 @@ The development artifacts provided for this task include:
      - Illustrate interaction behaviors and UI states
      - Serve as the **definitive reference** for visual fidelity
 
-3. **Resource Files**  
-   - Location: `/workspace/resources/**/*`  
+3. **Resource Files**
+   - Location: `/workspace/resources/**/*`
    - Includes images, videos, audio, icons, and other assets
-   - Must be utilized wherever relevant to faithfully reproduce the prototype content
+   - Must be utilized wherever relevant to faithfully reproduce the prototype content"""
+
+        implementation_visuals = """- **Strictly replicate prototype visuals**, including:
+  - Layout and spacing
+  - Typography
+  - Color scheme
+  - Visual hierarchy"""
+
+        responsive_line = "- Ensure responsive design if indicated by prototypes"
+
+        verification_line = "   - Visuals exactly match the prototype images"
+
+        hard_constraints = """- Do **not** assume unspecified requirements
+- Do **not** skip any required feature from `/workspace/prompt.txt`
+- Do **not** merge, remove, or invent features
+- **All features must work correctly and visuals must match the prototypes**
+- **The system must be fully reproducible by running `bash /workspace/start.sh`**"""
+    else:
+        input_materials = """1. **Task Description**
+   - Location: `/workspace/prompt.txt`
+   - Contains the specific requirements and functionality to implement
+
+2. **Resource Files**
+   - Location: `/workspace/resources/**/*`
+   - Includes images, videos, audio, icons, and other assets
+   - Must be utilized wherever relevant"""
+
+        implementation_visuals = """- **Implement a complete, polished UI design**, including:
+  - Consistent layout and spacing
+  - Typography
+  - Color scheme
+  - Visual hierarchy"""
+
+        responsive_line = "- Ensure responsive design"
+
+        verification_line = ""
+
+        hard_constraints = """- Do **not** assume unspecified requirements
+- Do **not** skip any required feature from `/workspace/prompt.txt`
+- Do **not** merge, remove, or invent features
+- **All features must work correctly**
+- **The system must be fully reproducible by running `bash /workspace/start.sh`**"""
+
+    return f"""You are a **senior front-end engineer with extensive experience in interactive frontend development**.
+
+Your responsibility is to **methodically implement and deploy a complete, interactive front-end application** strictly in accordance with the provided materials in the current working directory.
+You are required to **follow the instructions continuously until the application is fully operational**.
+**No clarifications or approvals should be sought, and no steps should be omitted prematurely.**
+
+---
+
+## I. Input Materials
+
+The development artifacts provided for this task include:
+
+{input_materials}
 
 ---
 
@@ -184,16 +260,12 @@ Explicitly specify the following:
 ### Step 2: Implementation
 
 #### Front-End
-- **Strictly replicate prototype visuals**, including:
-  - Layout and spacing
-  - Typography
-  - Color scheme
-  - Visual hierarchy
+{implementation_visuals}
 - Implement **all interactions and functionality** as specified in `/workspace/prompt.txt`
 - Use actual resource files from `/workspace/resources/`
 - Implement proper state management
 - Support **all UI states**
-- Ensure responsive design if indicated by prototypes
+{responsive_line}
 - **In this task, Frontend code may directly include mock data to faithfully reproduce the prototype states and visual presentation**
 
 ---
@@ -203,7 +275,7 @@ Explicitly specify the following:
 1. Build and test the application locally to verify:
    - The application is accessible at `http://localhost:3000`
    - All features and interactions work correctly
-   - Visuals exactly match the prototype images
+{verification_line}
 2. Generate a **deployment script `/workspace/start.sh`** with the following requirements:
    - The script must be fully self-contained, such that it can be run inside a completely new container with no prior dependencies.
    - Prepare the full environment: install all runtime dependencies, build tools, and required system packages.
@@ -212,7 +284,7 @@ Explicitly specify the following:
      ```bash
      bash /workspace/start.sh
      ```
-     the application must be fully operational and accessible at  
+     the application must be fully operational and accessible at
      **`http://localhost:3000`**, with all features working correctly.
      Note: The application only needs to run in development mode. There is no need to use production configurations.
 3. Run start.sh in a clean environment
@@ -257,26 +329,12 @@ Deliverables include:
 
 ## IV. Hard Constraints
 
-- Do **not** assume unspecified requirements  
-- Do **not** skip any required feature from `/workspace/prompt.txt`
-- Do **not** merge, remove, or invent features  
-- **All features must work correctly and visuals must match the prototypes**  
-- **The system must be fully reproducible by running `bash /workspace/start.sh`**"""
+{hard_constraints}"""
 
-# Prompt for website task (full-stack web application)
-WEBSITE_PROMPT = """You are a **senior full-stack engineer with extensive experience in web production development**.
 
-Your responsibility is to **methodically implement and deploy a complete, production-ready web application** strictly in accordance with the provided materials in the current working directory.  
-You are required to **follow the instructions continuously until the application is fully operational**.  
-**No clarifications or approvals should be sought, and no steps should be omitted prematurely.**
-
----
-
-## I. Input Materials
-
-The development artifacts provided for this task include:
-
-1. **Product Requirement Document**
+def _get_website_prompt(use_prototypes: bool) -> str:
+    if use_prototypes:
+        input_materials = """1. **Product Requirement Document**
    - Location: `/workspace/prd.md`
    - Sections:
      - Product Overview
@@ -291,10 +349,88 @@ The development artifacts provided for this task include:
      - Illustrate interaction behaviors and UI states
      - Serve as the **definitive reference** for visual fidelity
 
-3. **Resource Files**  
-   - Location: `/workspace/resources/**/*`  
-   - Includes images, videos, audio, icons, and other assets  
-   - Must be utilized wherever relevant to faithfully reproduce the prototype content
+3. **Resource Files**
+   - Location: `/workspace/resources/**/*`
+   - Includes images, videos, audio, icons, and other assets
+   - Must be utilized wherever relevant to faithfully reproduce the prototype content"""
+
+        seed_data_note = "Design initial **seed data**, explicitly mapped to prototype content"
+
+        seed_data_requirements = """- Seed data must:
+  - Accurately reflect all visible content depicted in the prototype images
+  - Populate all pages, lists, cards, tables, and detail views
+  - Support all required UI states (loading, empty, error) as defined in the PRD
+  - Fully utilize resource files to replicate the prototypes precisely
+- Placeholder data is strictly prohibited"""
+
+        frontend_visuals = """- **Strictly replicate prototype visuals**, including:
+  - Layout and spacing
+  - Typography
+  - Color scheme
+  - Visual hierarchy
+- Implement **all interactions** depicted or implied by the prototypes"""
+
+        verification_line = "   - Visuals exactly match the prototype images"
+
+        integration_line = "- Seed data must drive the UI precisely as illustrated in the prototypes"
+
+        hard_constraints = """- Do **not** assume unspecified requirements
+- Do **not** skip any PRD feature
+- Do **not** merge, remove, or invent pages
+- **All pages must visually and functionally match the prototypes**
+- **The system must be fully reproducible by running `bash /workspace/start.sh`**"""
+    else:
+        input_materials = """1. **Product Requirement Document**
+   - Location: `/workspace/prd.md`
+   - Sections:
+     - Product Overview
+     - Business Logic
+     - Detailed Requirements
+
+2. **Resource Files**
+   - Location: `/workspace/resources/**/*`
+   - Includes images, videos, audio, icons, and other assets
+   - Must be utilized wherever relevant"""
+
+        seed_data_note = "Design initial **seed data** based on the PRD requirements"
+
+        seed_data_requirements = """- Seed data must:
+  - Accurately reflect the content described in the PRD
+  - Populate all pages, lists, cards, tables, and detail views
+  - Support all required UI states (loading, empty, error) as defined in the PRD
+  - Fully utilize resource files where applicable
+- Placeholder data is strictly prohibited"""
+
+        frontend_visuals = """- **Implement the UI as described in the PRD**, including:
+  - Consistent layout and spacing
+  - Typography
+  - Color scheme
+  - Visual hierarchy
+- Implement **all interactions** specified in the PRD"""
+
+        integration_line = "- Seed data must drive the UI as specified in the PRD"
+
+        verification_line = ""
+
+        hard_constraints = """- Do **not** assume unspecified requirements
+- Do **not** skip any PRD feature
+- Do **not** merge, remove, or invent pages
+- **All pages must visually and functionally match the PRD requirements**
+- **The system must be fully reproducible by running `bash /workspace/start.sh`**"""
+
+    return f"""You are a **senior full-stack engineer with extensive experience in web production development**.
+
+Your responsibility is to **methodically implement and deploy a complete, production-ready web application** strictly in accordance with the provided materials in the current working directory.
+You are required to **follow the instructions continuously until the application is fully operational**.
+**No clarifications or approvals should be sought, and no steps should be omitted prematurely.**
+
+---
+
+## I. Input Materials
+
+The development artifacts provided for this task include:
+
+{input_materials}
 
 ---
 
@@ -311,7 +447,7 @@ Produce a **comprehensive design document** encompassing:
 - Specify fields, data types, and constraints
 - Detail relationships among entities
 - Define indexes and rules for data integrity
-- Design initial **seed data**, explicitly mapped to prototype content
+- {seed_data_note}
 
 #### 2. Front-End and Back-End Architecture
 - Specify chosen frameworks and libraries
@@ -337,13 +473,8 @@ Explicitly specify the following:
 
 ### Step 2: Seed Data Generation
 
-- Generate **complete and realistic seed data** for the database.  
-- Seed data must:
-  - Accurately reflect all visible content depicted in the prototype images
-  - Populate all pages, lists, cards, tables, and detail views
-  - Support all required UI states (loading, empty, error) as defined in the PRD
-  - Fully utilize resource files to replicate the prototypes precisely
-- Placeholder data is strictly prohibited
+- Generate **complete and realistic seed data** for the database.
+{seed_data_requirements}
 
 ---
 
@@ -360,30 +491,25 @@ Explicitly specify the following:
 - Ensure APIs fully support all front-end use cases
 
 #### Front-End
-- **Strictly replicate prototype visuals**, including:
-  - Layout and spacing
-  - Typography
-  - Color scheme
-  - Visual hierarchy
-- Implement **all interactions** depicted or implied by the prototypes
+{frontend_visuals}
 - Consume live back-end APIs (no hardcoded mock data)
 - Support **all UI states**
 
 #### Integration
 - Ensure seamless integration between front-end and back-end
 - All rendered content must originate from the database
-- Seed data must drive the UI precisely as illustrated in the prototypes
+{integration_line}
 
 ---
 
 ### Step 4: Deployment, Verification, and Script Generation
 
-1. Initialize the database schema  
-2. Load all seed data  
+1. Initialize the database schema
+2. Load all seed data
 3. Launch the full application and verify:
    - The application is accessible at `http://localhost:3000`
    - All pages and features function correctly
-   - Visuals exactly match the prototype images
+{verification_line}
 4. Generate a **deployment script `/workspace/start.sh`** with the following requirements:
    - The script must be fully self-contained, such that it can be run inside a completely new with no prior dependencies or database state.
    - Prepare the full environment: install all runtime dependencies, build tools, and required system packages.
@@ -396,13 +522,13 @@ Explicitly specify the following:
      ```bash
      bash /workspace/start.sh
      ```
-     the website must be fully operational and accessible at  
+     the website must be fully operational and accessible at
      **`http://localhost:3000`**, with a fresh database and fully initialized system.
      Note: The application only needs to run in development mode. There is no need to use production configurations or production environment settings.
 5. Run start.sh in a clean environment
    - Verify that the script successfully installs dependencies, initializes the database, loads seed data, and launches the application.
    - Confirm that the website is fully operational and accessible at http://localhost:3000
-    
+
 ---
 
 ### Step 5: Documentation
@@ -441,33 +567,30 @@ Deliverables include:
 
 ## IV. Hard Constraints
 
-- Do **not** assume unspecified requirements  
-- Do **not** skip any PRD feature  
-- Do **not** merge, remove, or invent pages  
-- **All pages must visually and functionally match the prototypes**  
-- **The system must be fully reproducible by running `bash /workspace/start.sh`**"""
+{hard_constraints}"""
 
 
-def get_prompt_for_task(task_type: str) -> str:
+def get_prompt_for_task(task_type: str, use_prototypes: bool = False) -> str:
     """
     Get the appropriate prompt for a task type.
-    
+
     Args:
         task_type: Task type (webpage, frontend, or website)
-    
+        use_prototypes: Whether to include prototype image instructions
+
     Returns:
         Prompt string
-    
+
     Raises:
         ValueError: If task type is invalid
     """
-    prompts = {
-        'webpage': WEBPAGE_PROMPT,
-        'frontend': FRONTEND_PROMPT,
-        'website': WEBSITE_PROMPT,
+    builders = {
+        'webpage': _get_webpage_prompt,
+        'frontend': _get_frontend_prompt,
+        'website': _get_website_prompt,
     }
-    
-    if task_type not in prompts:
-        raise ValueError(f"Invalid task type: {task_type}. Must be one of: {list(prompts.keys())}")
-    
-    return prompts[task_type]
+
+    if task_type not in builders:
+        raise ValueError(f"Invalid task type: {task_type}. Must be one of: {list(builders.keys())}")
+
+    return builders[task_type](use_prototypes)
