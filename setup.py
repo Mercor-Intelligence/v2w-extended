@@ -24,6 +24,7 @@ setup(
         "openai>=1.0.0",
         "playwright>=1.40.0",
         "Pillow>=10.0.0",
+        "huggingface_hub>=0.20.0",
     ],
     extras_require={
         "dev": [
