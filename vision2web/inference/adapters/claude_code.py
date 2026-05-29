@@ -125,7 +125,6 @@ async def main():
         cwd="/workspace",
         disallowed_tools=["EnterPlanMode", "ExitPlanMode", "AskUserQuestion", "Skill", "SlashCommand"],
     )
-
     async for msg in query(prompt=message_stream, options=options):
         print(str(msg), flush=True)
 
