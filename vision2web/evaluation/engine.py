@@ -105,11 +105,6 @@ class EvaluationEngine:
                         if not project_dir.is_dir() or project_dir.name.startswith('.'):
                             continue
 
-                        # Check if evaluation_result.json already exists
-                        result_file = project_dir / 'evaluation_result.json'
-                        if result_file.exists():
-                            self.logger.info(f"Skipping project {project_dir.name}: evaluation_result.json already exists")
-                            continue
                         script_file = project_dir / 'start.sh'
                         if not script_file.exists():
                             self.logger.info(f"Skipping project {project_dir.name}: start script not exists")
