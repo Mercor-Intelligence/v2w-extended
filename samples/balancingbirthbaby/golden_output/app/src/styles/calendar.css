@@ -1,0 +1,166 @@
+.cal-filters {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.2fr 1fr;
+  gap: 1rem;
+  background: var(--color-bg-alt);
+  padding: 1.2rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+.cal-filter label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.month-year { display: flex; gap: 0.5rem; }
+.view-toggle {
+  display: flex;
+  border: 2px solid var(--color-primary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.view-toggle button {
+  flex: 1;
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  border: none;
+  padding: 0.55rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.view-toggle button.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.cal-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+.cal-nav h2 { margin: 0; font-size: 1.4rem; }
+.cal-nav button {
+  background: none;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary-dark);
+  padding: 0.5rem 1.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.cal-nav button:hover { background: var(--color-primary); color: var(--color-white); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--color-border);
+  gap: 1px;
+  border: 1px solid var(--color-border);
+}
+.cal-head {
+  background: var(--color-primary);
+  color: var(--color-white);
+  text-align: center;
+  padding: 0.7rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+.cal-cell {
+  background: var(--color-white);
+  min-height: 110px;
+  padding: 0.4rem;
+  position: relative;
+}
+.cal-cell.empty { background: #faf6f1; }
+.cal-day-num {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-align: right;
+  margin-bottom: 0.25rem;
+}
+.cal-event {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 0.25rem 0.4rem;
+  font-size: 0.7rem;
+  margin-bottom: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cat-prenatal { background: #a87b6a; }
+.cat-childbirth { background: #c08a76; }
+.cat-postpartum { background: #6b8f5e; }
+.cat-newborn { background: #8a7fb2; }
+
+.weekly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.weekly-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
+  background: var(--color-white);
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.weekly-row:hover { box-shadow: var(--shadow-md); transform: translateX(2px); }
+.weekly-date { display: flex; flex-direction: column; }
+.weekly-date strong { color: var(--color-primary-dark); }
+.weekly-date span { color: var(--color-muted); font-size: 0.9rem; }
+.weekly-info h4 { margin: 0 0 0.4rem; }
+
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 400;
+  padding: 1rem;
+}
+.modal {
+  background: var(--color-white);
+  padding: 2rem;
+  max-width: 480px;
+  width: 100%;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: var(--shadow-md);
+}
+.modal-close {
+  position: absolute;
+  top: 0.5rem; right: 0.8rem;
+  font-size: 1.6rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--color-muted);
+}
+.modal h3 { margin: 0.6rem 0 1rem; }
+
+@media (max-width: 900px) {
+  .cal-filters { grid-template-columns: 1fr; }
+  .cal-cell { min-height: 70px; }
+  .cal-event { font-size: 0.6rem; }
+  .weekly-row { grid-template-columns: 1fr; gap: 0.5rem; }
+}
