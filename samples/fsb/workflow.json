@@ -1,0 +1,178 @@
+[
+  {
+    "depends_on": [],
+    "index": 0,
+    "summary": "Navigation menu functionality testing to verify successful access to different sections via top navigation bar and content area links",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the ABOUT THE FSB navigation menu item successfully displays the About FSB page.",
+        "actions": [
+          "Click the ABOUT THE FSB navigation menu item"
+        ],
+        "validations": [
+          "The page displays the About FSB content",
+          "The page heading shows 'About the FSB'",
+          "A breadcrumb navigation is visible showing the current page location"
+        ]
+      },
+      {
+        "objective": "Verify that navigating back from About FSB page returns to the homepage, and clicking the PUBLICATIONS navigation menu item successfully displays the Publications page.",
+        "actions": [
+          "browser:back",
+          "Click the PUBLICATIONS navigation menu item"
+        ],
+        "validations": [
+          "The page displays the Publications content",
+          "The page heading shows 'Publications'",
+          "A list of publication results is visible on the page"
+        ]
+      },
+      {
+        "objective": "Verify that navigating back from Publications page returns to the homepage, and clicking the CONSULTATIONS navigation menu item successfully displays the Consultations page.",
+        "actions": [
+          "browser:back",
+          "Click the CONSULTATIONS navigation menu item"
+        ],
+        "validations": [
+          "The page displays the Consultations content",
+          "The page heading shows 'Consultations'",
+          "Content about the consultation process is visible on the page"
+        ]
+      },
+      {
+        "objective": "Verify that navigating back from Consultations page returns to the homepage, and clicking the PRESS navigation menu item successfully displays the Press page.",
+        "actions": [
+          "browser:back",
+          "Click the PRESS navigation menu item"
+        ],
+        "validations": [
+          "The page displays the Press content",
+          "The page heading shows 'Press'",
+          "A list of press release results is visible on the page"
+        ]
+      }
+    ],
+    "prototype": {
+      "Homepage": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 1,
+    "summary": "About FSB page navigation testing to verify successful access from homepage",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the ABOUT THE FSB navigation menu item successfully displays the About FSB page.",
+        "actions": [
+          "Click the ABOUT THE FSB navigation menu item"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "About FSB": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 2,
+    "summary": "Publications page navigation and breadcrumb functionality testing to verify access and return to homepage",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the PUBLICATIONS navigation menu item successfully displays the Publications page.",
+        "actions": [
+          "Click the PUBLICATIONS navigation menu item"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Publications": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 3,
+    "summary": "Climate-related Risks page content link testing to verify navigation to Publications page",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [],
+    "prototype": {
+      "Climate-related Risks": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 4,
+    "summary": "Consultations page navigation testing to verify successful access from homepage",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the CONSULTATIONS navigation menu item successfully displays the Consultations page.",
+        "actions": [
+          "Click the CONSULTATIONS navigation menu item"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Consultations": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 5,
+    "summary": "Press page navigation testing to verify successful access from homepage",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the PRESS navigation menu item successfully displays the Press page.",
+        "actions": [
+          "Click the PRESS navigation menu item"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Press": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  }
+]
