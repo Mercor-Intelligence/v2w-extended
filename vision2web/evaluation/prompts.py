@@ -1,3 +1,57 @@
+NON_PROTOTYPE_PROMPT = """You are a **senior QA automation engineer**. Your task is to **compare a reference design with an actual page screenshot** and score the appearance of the page.
+
+> **Important:** The page being evaluated was built **without access to this reference design**. Focus on whether components are present and serve their intended purpose. Do not penalize for differences in visual style, color, fonts, or exact layout — only penalize for structural or content omissions.
+
+---
+
+## Input
+1. **Reference Design** : {prototype_page}
+2. **Actual Page Image** : {actual_page}
+
+> Note: You need to automatically segment the page into meaningful UI components based on visual and functional layout.
+
+---
+
+## Component Segmentation Rules
+- Divide the page into **logical functional blocks**, not too granular or too coarse.
+- Example functional blocks:
+  - Navigation bar / header
+  - Hero section / main banner
+  - Product listing / catalog area
+  - Checkout / payment section
+  - Footer
+  - Any other visually distinct functional sections
+- For each block, treat it as a **single component** for scoring purposes.
+
+---
+
+## Scoring Rules
+
+Each component/block gets an independent score:
+
+| Score | Description |
+|-------|-------------|
+| 1.0   | **Present:** Component is present and fulfills its intended role. Differences in visual style, color, fonts, spacing, or exact layout are acceptable. |
+| 0.75  | **Mostly present:** Component is present with the right purpose but is missing some secondary content or has noticeable structural gaps. |
+| 0.5   | **Partially present:** Component exists but is missing significant content or key elements that define its purpose. |
+| 0.25  | **Minimally present:** Component is barely recognisable — largely incomplete or serving a different purpose than intended. |
+| 0.0   | **Missing:** Component is entirely absent or bears no resemblance to the reference. |
+
+---
+
+## Output Requirements
+- Output **only** a JSON object in the following structure:
+
+```json
+[
+    {{
+      "name": "<component name>",
+      "score": <0 | 0.25 | 0.5 | 0.75 | 1>,
+      "reason": "<brief explanation of why this score was given>"
+    }}
+]
+```"""
+
 PROTOTYPE_PROMPT = """You are a **senior QA automation engineer**. Your task is to **compare a prototype image with an actual page screenshot** and score the appearance of the page.
 
 > **Important:** Carefully observe **all differences** between the prototype and the actual page. Do not overlook any discrepancies, however small. Score strictly according to the rules below.

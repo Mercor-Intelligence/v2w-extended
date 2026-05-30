@@ -160,8 +160,10 @@ def inference(framework, model, api_key, base_url, sandbox_image, datasets_dir,
 @click.option('--projects', default=None, metavar='TASK/NAME,...',
               help='Comma-separated projects to evaluate as task_type/project_name '
                    '(e.g. webpage/aws,frontend/1daycloud). Default: all projects.')
+@click.option('--use-prototypes', is_flag=True, default=False,
+              help='Use strict prototype scoring (inference run had access to prototype images)')
 def evaluate(results_dir, datasets_dir, sandbox_image, api_key, base_url,
-             gui_agent_model, vlm_judge_model, max_workers, task, framework, eval_model_filter, projects):
+             gui_agent_model, vlm_judge_model, max_workers, task, framework, eval_model_filter, projects, use_prototypes):
     """Run evaluation phase to test generated projects"""
 
     logger = setup_logger('vision2web', level='INFO')
@@ -195,6 +197,7 @@ def evaluate(results_dir, datasets_dir, sandbox_image, api_key, base_url,
     config.evaluation.task = task
     config.evaluation.framework = framework
     config.evaluation.model = eval_model_filter
+    config.evaluation.use_prototypes = use_prototypes
 
     # Log configuration
     logger.info("=" * 60)
@@ -209,6 +212,7 @@ def evaluate(results_dir, datasets_dir, sandbox_image, api_key, base_url,
     logger.info(f"Framework: {framework or 'all'}")
     logger.info(f"Inference model filter: {eval_model_filter or 'all'}")
     logger.info(f"Max workers: {max_workers}")
+    logger.info(f"Use prototypes (strict scoring): {use_prototypes}")
     logger.info("=" * 60)
 
     engine = EvaluationEngine(config)

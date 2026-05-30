@@ -14,7 +14,7 @@ from PIL import Image
 import io
 from openai import OpenAI
 
-from vision2web.evaluation.prompts import GUI_PROMPT, PROTOTYPE_PROMPT
+from vision2web.evaluation.prompts import GUI_PROMPT, PROTOTYPE_PROMPT, NON_PROTOTYPE_PROMPT
 
 def _detect_image_mime(base64_str: str) -> str:
     """Detect image MIME type from base64 data magic bytes."""
@@ -556,7 +556,8 @@ class GUIAgentTester:
         window_width: int = 1920,
         window_height: int = 1080,
         output_dir: str = "test_results",
-        log_dir: Optional[str] = None
+        log_dir: Optional[str] = None,
+        use_prototypes: bool = False
     ):
         """Initialize the GUI Agent Tester
 
@@ -579,6 +580,7 @@ class GUIAgentTester:
         self.window_height = window_height
         self.output_dir = output_dir
         self.log_dir = log_dir
+        self.use_prototypes = use_prototypes
 
         self._setup_logger()
 
@@ -1228,7 +1230,8 @@ class GUIAgentTester:
         self.logger.info('Comparing prototype...')
 
         # Build prompt with placeholders (using <|...|> format for images)
-        prompt = PROTOTYPE_PROMPT.format(
+        prompt_template = PROTOTYPE_PROMPT if self.use_prototypes else NON_PROTOTYPE_PROMPT
+        prompt = prompt_template.format(
             prototype_page="<|prototype_page|>",
             actual_page="<|actual_page|>"
         )

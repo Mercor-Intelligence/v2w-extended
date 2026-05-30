@@ -46,7 +46,8 @@ class EvaluationEngine:
             headless=config.evaluation.headless,
             window_width=config.evaluation.window_width,
             window_height=config.evaluation.window_height,
-            output_dir=str(config.results_dir)
+            output_dir=str(config.results_dir),
+            use_prototypes=config.evaluation.use_prototypes
         )
 
     def discover_result_projects(
