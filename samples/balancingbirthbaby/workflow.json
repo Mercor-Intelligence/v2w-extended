@@ -1,0 +1,200 @@
+[
+  {
+    "depends_on": [],
+    "index": 0,
+    "summary": "Homepage navigation validation testing to verify all navigation menu items and call-to-action buttons successfully redirect to their corresponding target pages",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the Prenatal Classes menu item in the Classes & Events dropdown successfully navigates to the Prenatal Classes page, demonstrating a positive test scenario.",
+        "actions": [
+          "Click the \"Classes & Events\" dropdown menu in the navigation bar",
+          "Click the \"Prenatal Classes\" option in the dropdown menu"
+        ],
+        "validations": [
+          "The page displays the Prenatal Classes page header",
+          "The page content shows information about prenatal classes"
+        ]
+      },
+      {
+        "objective": "Verify that clicking the Class Calendar menu item in the Classes & Events dropdown successfully navigates to the Class Calendar page, demonstrating a positive test scenario.",
+        "actions": [
+          "browser:back",
+          "Click the \"Classes & Events\" dropdown menu in the navigation bar",
+          "Click the \"Class Calendar\" option in the dropdown menu"
+        ],
+        "validations": [
+          "The page displays the Class Calendar page with a calendar interface",
+          "The calendar shows available classes and events"
+        ]
+      },
+      {
+        "objective": "Verify that clicking the Birth Doula menu item in the Doula dropdown successfully navigates to the Birth Doula Services page, demonstrating a positive test scenario.",
+        "actions": [
+          "browser:back",
+          "Click the \"Doula\" dropdown menu in the navigation bar",
+          "Click the \"Birth Doula\" option in the dropdown menu"
+        ],
+        "validations": [
+          "The page displays the Birth Doula Services page header",
+          "The page content shows information about birth doula services"
+        ]
+      },
+      {
+        "objective": "Verify that clicking the Blog navigation menu item successfully navigates to the Blog page, demonstrating a positive test scenario.",
+        "actions": [
+          "browser:back",
+          "Click the \"Blog\" menu item in the navigation bar"
+        ],
+        "validations": [
+          "The page displays the Blog page header",
+          "The page content shows a list of blog posts"
+        ]
+      },
+      {
+        "objective": "Verify that clicking the Shop navigation menu item successfully navigates to the Shop page, demonstrating a positive test scenario.",
+        "actions": [
+          "browser:back",
+          "Click the \"Shop\" menu item in the navigation bar"
+        ],
+        "validations": [
+          "The page displays the Shop page header",
+          "The page content shows a list of products available for purchase"
+        ]
+      }
+    ],
+    "prototype": {
+      "Homepage": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 1,
+    "summary": "Prenatal Classes page navigation validation testing to verify the SEE FULL CALENDAR button successfully redirects to the Class Calendar page",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that navigating to the Prenatal Classes page from the navigation menu is successful.",
+        "actions": [
+          "Click the \"Classes & Events\" dropdown menu in the navigation bar",
+          "Click the \"Prenatal Classes\" option in the dropdown menu"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Prenatal Classes": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 2,
+    "summary": "Class Calendar page accessibility validation testing to verify the page can be reached through the Prenatal Classes page navigation flow",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the Class Calendar page can be successfully accessed by navigating through the Prenatal Classes page navigation flow, demonstrating a positive test scenario.",
+        "actions": [
+          "Click the \"Classes & Events\" dropdown menu in the navigation bar",
+          "Click the \"Prenatal Classes\" option in the dropdown menu",
+          "Click the \"SEE FULL CALENDAR\" button"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Class Calendar": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 3,
+    "summary": "Birth Doula Services page accessibility validation testing to verify the page can be reached through the navigation menu",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the Birth Doula Services page can be successfully accessed from the Doula dropdown menu, demonstrating a positive test scenario.",
+        "actions": [
+          "Click the \"Doula\" dropdown menu in the navigation bar",
+          "Click the \"Birth Doula\" option in the dropdown menu"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Birth Doula Services": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 4,
+    "summary": "Blog page accessibility validation testing to verify the page can be reached through the navigation menu",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the Blog page can be successfully accessed from the navigation menu, demonstrating a positive test scenario.",
+        "actions": [
+          "Click the \"Blog\" menu item in the navigation bar"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Blog": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 5,
+    "summary": "Shop page accessibility validation testing to verify the page can be reached through the navigation menu",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the Shop page can be successfully accessed from the navigation menu, demonstrating a positive test scenario.",
+        "actions": [
+          "Click the \"Shop\" menu item in the navigation bar"
+        ],
+        "validations": []
+      }
+    ],
+    "prototype": {
+      "Shop": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
+  }
+]
