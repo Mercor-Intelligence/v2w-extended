@@ -125,8 +125,16 @@ async def main():
         cwd="/workspace",
         disallowed_tools=["EnterPlanMode", "ExitPlanMode", "AskUserQuestion", "Skill", "SlashCommand"],
     )
+    trajectory = []
     async for msg in query(prompt=message_stream, options=options):
         print(str(msg), flush=True)
+        try:
+            trajectory.append(vars(msg))
+        except TypeError:
+            trajectory.append(str(msg))
+
+    with open('/workspace/trajectory.json', 'w') as f:
+        json.dump(trajectory, f, indent=2, default=str)
 
 asyncio.run(main())
 '''
@@ -136,7 +144,8 @@ asyncio.run(main())
             return_code, stdout, stderr = await self.sandbox_manager.exec_command(
                 workspace,
                 f"python3 << 'EOF'\n{python_code}EOF",
-                env=env
+                env=env,
+                timeout=self.timeout
             )
 
             # Collect logs

@@ -43,6 +43,7 @@ class EvaluationConfig:
     task: Optional[str] = None  # webpage, frontend, or website
     framework: Optional[str] = None
     model: Optional[str] = None  # Model filter for evaluation (inference model to evaluate)
+    use_prototypes: bool = False  # Whether the inference run used prototype images
 
 
 @dataclass
