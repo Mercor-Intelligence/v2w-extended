@@ -173,7 +173,11 @@ class FluxApp {
       this.state.paused = !this.state.paused;
       this.el.pause.textContent = this.state.paused ? 'Resume' : 'Pause';
       this.el.pause.setAttribute('aria-pressed', String(this.state.paused));
-      if (!this.state.paused && !this.query.frozen) {
+      if (this.state.paused) {
+        // Cancel any in-flight frame so a quick Pause/Resume cannot leave two
+        // concurrent _tick loops running and double the simulation speed.
+        window.cancelAnimationFrame(this.rafId);
+      } else if (!this.query.frozen) {
         this._tick();
       }
     });
