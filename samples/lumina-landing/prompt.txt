@@ -1,0 +1,21 @@
+I want a single-page marketing website for a product called Lumina. Lumina is an edge AI inference and observability platform: it runs AI models close to where data is created (at the network edge) and gives engineering teams live dashboards, traces, and alerts so they can see exactly how those models behave in production. The audience is platform engineers, ML engineers, and the technical leaders who buy tools for them, so the page should feel modern, fast, and high end, the kind of landing page you would expect from a top developer-tools company.
+
+The page is one long scrolling page with a sticky header at the very top. The header shows the Lumina wordmark on the left and a navigation menu with these links: Platform, Features, Metrics, Pricing, and Docs. Each link jumps to the matching section further down the page. On the right side of the header there is a bright accent-colored "Get started" button. On narrow phone screens the navigation collapses into a hamburger button that opens a full-width menu drawer containing the same links and the button.
+
+The first thing visitors see is a tall hero section with a living, animated background: a slow, flowing aurora-style gradient that drifts and shimmers behind the content. Over that background there is a short eyebrow label, a large headline about running AI inference at the edge with full observability, a sentence or two of supporting copy, and two call-to-action buttons side by side: a primary "Start free" button and a secondary "Book a demo" button. Floating near the headline there is a small product-preview card that hints at the product UI, for example a latency number and a tiny live chart.
+
+Below the hero, show a "trusted by" strip: a row of recognizable technology company logos in a muted, single-color treatment, introduced by a short line like "Trusted by teams shipping at the edge".
+
+Next, a Features section with a heading and a grid of six feature cards. Each card has its own icon, a short title, and one or two sentences. The cards should gently lift or highlight when the mouse moves over them. Cover themes like low-latency inference, GPU autoscaling, live tracing, security and compliance, global edge regions, and version rollouts.
+
+Then a Metrics section: a horizontal band of four big numbers that count up from zero to their final value when the section scrolls into view (for example requests served, p95 latency in milliseconds, uptime percentage, and edge regions). Include a small line chart in this band built from real data.
+
+After the metrics, include two larger feature sections stacked vertically that alternate left and right: one with the text on the left and an image on the right, the next with the image on the left and text on the right. Each has a heading, a paragraph, a short checklist of three points, and a real photo. These sections should fade and slide into view as the visitor scrolls to them.
+
+Next a Pricing section with three plan cards side by side (for example Developer, Team, and Enterprise). The middle plan is visually highlighted as the most popular. Each card lists a price, a short description, a list of included features, and a button.
+
+Then a short testimonial band: one large customer quote with the person's name, title, and company.
+
+Finally a footer with the Lumina wordmark, a short blurb, and several columns of links (for example Product, Developers, Company, Legal), plus a bottom bar with a copyright line.
+
+The whole page must look polished and intentional on large desktop screens, tablets, and phones, with careful spacing, a confident color palette, and clear typography. Make it accessible: real headings in order, descriptive alt text on images, and visible focus outlines for keyboard users.

@@ -1,0 +1,11 @@
+I want a small personal Kanban board called Cadence that runs entirely in the browser. It is just for me keeping track of my own work, so there are no accounts, no sign in, and no sharing.
+
+The board has three columns side by side that read like a simple lifecycle: Backlog, In Progress, and Done. Each column shows its name and a count of how many cards it holds right now. Every piece of work is a card showing a title, a short description, how urgent it is (Low, Med, or High) as a small colored pill, and a single tag so I can group related cards.
+
+I want to add a card, edit a card when the details change, delete a card I no longer need, and move a card between columns. Moving should use small Move buttons on the card itself, one to send it left and one to send it right, not dragging. New cards start in Backlog. A card cannot move left out of Backlog or right out of Done.
+
+At the top there should be a filter so I can pick one tag and see only the cards with that tag, plus a way to clear the filter and see everything again.
+
+The important part: my board has to stick. When I add or move a card and then reload the page, everything should still be there, kept in the browser itself with no server and no database behind it. If I ever open it in a completely empty browser, it should start with a sensible board already filled in.
+
+Please make it feel calm and polished: clear type, gentle spacing, a single indigo accent with a warm amber highlight, and soft depth on the cards. It should look good on a laptop, tablet, and phone.

@@ -1,0 +1,15 @@
+I want to build a generative art piece called "Flux": a flow-field particle animation that fills the whole browser window on an HTML canvas. Thousands of tiny particles drift through an invisible flow field driven by smooth Perlin-style noise, each one trailing a thin fading line behind it, so the screen slowly fills with silky, swirling streams of color.
+
+Over the canvas, in the top-left corner, there is a small floating control panel that looks like a polished studio instrument. It is titled "FLUX" with the subtitle "Flow Field Studio". The panel has:
+
+- A "Particles" slider to set how many particles there are, with the current number shown next to the label.
+- A "Speed" slider for how fast they move, showing the current value.
+- A "Noise scale" slider for how tight or loose the swirls are, showing the current value.
+- A "Palette" selector to switch the color theme. There are at least three named palettes: Aurora, Ember, and Mono. The current palette name is always shown in the panel.
+- A "Pause" button that stops and resumes the animation. When paused, its label changes to "Resume".
+- A "Reset" button that restarts the field from scratch.
+- A live frame counter and the current seed value, shown in a small monospaced readout.
+
+The look is dark and modern: a near-black background, crisp typography, rounded corners, soft shadows, and a translucent frosted panel. Aurora uses cool cyan/indigo/green tones; Ember uses warm amber/orange/red; Mono is elegant greys and whites.
+
+The animation must be fully repeatable, not random each time. Use a seeded random generator so the exact same picture can be reproduced. Support these URL options: "?seed=S" picks the random seed, "?palette=P" picks the starting palette (aurora, ember, or mono), and "?frame=N" fast-forwards the simulation by exactly N steps and then freezes on that still frame so it can be captured as an image. For example, "?seed=1&frame=320&palette=aurora" should always render the identical frozen image. With no options, it animates live from a default seed.

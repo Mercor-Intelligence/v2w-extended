@@ -1,0 +1,9 @@
+# OS / editor cruft
+.DS_Store
+*.log
+.vscode/*
+.idea
+
+# This is a pure static app with no build step; nothing is installed here.
+# node_modules only appears if the npx fallback in start.sh is ever used.
+node_modules
