@@ -222,23 +222,21 @@ function writeBoard(board) {
   }
 }
 
-function persistState() {
+// Persist a board snapshot. Defaults to current state, but callers pass a
+// candidate ({ nextId, cards }) so they can persist BEFORE committing to the
+// in-memory state. If writeBoard throws, in-memory state stays untouched and
+// cannot diverge from storage.
+function persistState(next = state) {
   writeBoard({
     boardTitle: SEED_BOARD.boardTitle,
-    nextId: state.nextId,
-    cards: state.cards,
+    nextId: next.nextId,
+    cards: next.cards,
   });
 }
 
 function sanitizeText(value, maxLen) {
   if (typeof value !== 'string') return '';
   return value.trim().slice(0, maxLen);
-}
-
-function nextCardId() {
-  const id = `card-${String(state.nextId).padStart(3, '0')}`;
-  state.nextId += 1;
-  return id;
 }
 
 function maxOrderInColumn(column) {
@@ -258,7 +256,7 @@ function createCard(input) {
     throw new Error(`priority must be one of ${PRIORITIES.join(', ')}`);
   }
   const card = {
-    id: nextCardId(),
+    id: `card-${String(state.nextId).padStart(3, '0')}`,
     title,
     description: sanitizeText(input.description, 600),
     priority,
@@ -266,8 +264,10 @@ function createCard(input) {
     column: 'backlog',
     order: maxOrderInColumn('backlog') + 1,
   };
+  // Persist first; only commit the card and the id bump if storage succeeds.
+  persistState({ nextId: state.nextId + 1, cards: [...state.cards, card] });
   state.cards.push(card);
-  persistState();
+  state.nextId += 1;
   return card;
 }
 
@@ -307,17 +307,22 @@ function updateCard(id, input) {
     }
   }
 
+  // Persist first; only mutate the in-memory card if storage succeeds.
+  persistState({
+    nextId: state.nextId,
+    cards: state.cards.map((c) => (c.id === id ? { ...c, ...patch } : c)),
+  });
   Object.assign(card, patch);
-  persistState();
   return card;
 }
 
 // Remove a card. Mirrors DELETE /api/cards/:id. Throws on missing id.
 function deleteCardById(id) {
-  const before = state.cards.length;
-  state.cards = state.cards.filter((c) => c.id !== id);
-  if (state.cards.length === before) throw new Error('Card not found.');
-  persistState();
+  const remaining = state.cards.filter((c) => c.id !== id);
+  if (remaining.length === state.cards.length) throw new Error('Card not found.');
+  // Persist first; only drop the card from memory if storage succeeds.
+  persistState({ nextId: state.nextId, cards: remaining });
+  state.cards = remaining;
 }
 
 // --- Rendering ------------------------------------------------------------
