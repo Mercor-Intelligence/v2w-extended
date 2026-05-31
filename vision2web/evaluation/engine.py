@@ -485,6 +485,7 @@ class EvaluationEngine:
             "-e", f"BASE_URL={self.config.evaluation.base_url}",
             "-e", f"GUI_AGENT_MODEL={self.config.evaluation.gui_agent_model}",
             "-e", f"VLM_JUDGE_MODEL={self.config.evaluation.vlm_judge_model}",
+            "-e", f"USE_PROTOTYPES={'1' if self.config.evaluation.use_prototypes else '0'}",
             container_id,
             "python3", "/workspace/run_gui_test.py"
         ]
@@ -539,6 +540,8 @@ async def main():
     gui_agent_model = os.environ.get("GUI_AGENT_MODEL")
     vlm_judge_model = os.environ.get("VLM_JUDGE_MODEL")
 
+    use_prototypes = os.environ.get("USE_PROTOTYPES", "0") == "1"
+
     if not all([api_key, base_url, gui_agent_model, vlm_judge_model]):
         print("ERROR: Missing required environment variables", file=sys.stderr)
         sys.exit(1)
@@ -583,7 +586,8 @@ async def main():
                 window_width=resolution.get('width', 1920),
                 window_height=resolution.get('height', 1080),
                 output_dir="/workspace",
-                log_dir="/workspace/logs"
+                log_dir="/workspace/logs",
+                use_prototypes=use_prototypes
             )
 
             result = await tester.run_test(
