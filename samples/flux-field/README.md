@@ -6,7 +6,7 @@ A full-viewport generative art piece on HTML Canvas 2D. Thousands of tiny partic
 
 | Axis | Value |
 | ---- | ----- |
-| Track | Design sub-track A (SVG / CSS / Canvas) |
+| CDA level | L2: Interactive Frontend (Design sub-track A: SVG / CSS / Canvas) |
 | V2W type | `frontend` (single self-contained page, no backend) |
 | Metrics | VS (visual similarity) primary, light FS (GUI-agent) on the control panel |
 | Determinism | Seeded PRNG plus fixed-timestep stepping; frozen still frame via `?frame=N` |

@@ -10,6 +10,7 @@ There is no server, no database, and no accounts.
 
 | Axis     | Value                                                          |
 | -------- | -------------------------------------------------------------- |
+| CDA level | **L2: Interactive Frontend**                                  |
 | Phase    | **ZTO Phase 2**                                                |
 | Category | **Mini Productivity Apps**                                     |
 | V2W type | **frontend** (self-contained, client-side web app)             |

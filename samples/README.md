@@ -31,6 +31,12 @@ Two scores come out of evaluation:
 All five tasks are V2W type `frontend`: client-side only, built blind from
 `prompt.txt`, no prototypes shown to the model at inference time (leakage-free).
 
+In the harness level taxonomy (`vision2web/analyze/analyzer.py`: `webpage` = L1
+Static Webpage, `frontend` = L2 Interactive Frontend, `website` = L3 Full-Stack),
+all five are L2: Interactive Frontend. Only `frontend` (brief in `prompt.txt`) and
+`website` (brief in `prd.md`) take a written brief; an L1 `webpage` task takes no
+prompt at all, which is why a prompt-driven sample cannot be L1.
+
 ## The five tasks
 
 | Task | One line | Highlights |
