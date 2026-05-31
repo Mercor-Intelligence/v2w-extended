@@ -423,6 +423,7 @@ class SandboxManager:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
+
             stdout, stderr = await result.communicate()
 
             return (

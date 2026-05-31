@@ -144,8 +144,7 @@ asyncio.run(main())
             return_code, stdout, stderr = await self.sandbox_manager.exec_command(
                 workspace,
                 f"python3 << 'EOF'\n{python_code}EOF",
-                env=env,
-                timeout=self.timeout
+                env=env
             )
 
             # Collect logs

@@ -11,8 +11,7 @@ def get_adapter(
     model: str,
     base_url: str = None,
     sandbox_manager = None,
-    logger = None,
-    timeout: int = 3600
+    logger = None
 ) -> BaseAdapter:
     """
     Get an adapter instance for the specified framework.
@@ -48,8 +47,7 @@ def get_adapter(
         model=model,
         base_url=base_url,
         sandbox_manager=sandbox_manager,
-        logger=logger,
-        timeout=timeout
+        logger=logger
     )
 
 
