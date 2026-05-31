@@ -530,7 +530,7 @@ function loadBoard() {
   try {
     const board = readBoard();
     state.cards = Array.isArray(board.cards) ? board.cards : [];
-    state.nextId = board.nextId || state.cards.length + 1;
+    state.nextId = board.nextId ?? state.cards.length + 1;
     render();
   } catch (err) {
     els.board.setAttribute('aria-busy', 'false');
