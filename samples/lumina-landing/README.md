@@ -180,7 +180,7 @@ cd v2w-extended
 pip install -e .
 pip install 'litellm[proxy]'
 
-# 2. Build the pinned sandbox image (bakes in Node, Playwright/Chromium, and the Claude Code CLI)
+# 2. Build the pinned sandbox image (Node + Playwright/Chromium)
 bash docker/build.sh
 
 # 3. Start a LiteLLM proxy that routes the model id to Anthropic Opus.
@@ -230,6 +230,7 @@ Notes:
 - Do not pass `--use-prototypes`: inference stays leakage-free, and the visual judge scores component presence rather than pixel-exact replication.
 - The grader loads prototypes as `prototypes/<name>.jpg` keyed to the `workflow.json` prototype names; this sample already ships them.
 - Invoke the CLI as `python3 -m vision2web.cli` so it uses this checkout's code.
+- The `claude_code` framework needs the `claude` CLI inside the sandbox; the base image does not include it, so add `RUN npm install -g @anthropic-ai/claude-code` to `docker/Dockerfile.sandbox` before step 2 (or run the `openhands` framework instead).
 - On Docker Desktop (macOS/Windows) `host.docker.internal` resolves automatically. On Linux, start the container with `--add-host=host.docker.internal:host-gateway`, or point `--base-url` at a host IP the container can reach.
 - Per-sample scores: `results/frontend/claude_code/claude-opus-4-8/lumina-landing/test_results/` (per-component `*_scores.json` for VS; `workflow_*/test_case_*/result.json` for FS).
 - To view the reference build instead of running the model: `bash samples/lumina-landing/golden_output/start.sh`, then open http://localhost:3000.
