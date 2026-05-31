@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flux — Flow Field Studio</title>
+    <meta
+      name="description"
+      content="Flux: a deterministic flow-field particle animation on HTML Canvas 2D, advected through a simplex-noise field with fading trails."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- Full-viewport canvas the flow field is painted onto. -->
+    <canvas id="flux-canvas" aria-label="Flux flow-field particle animation"></canvas>
+
+    <!-- Floating control panel. The piece itself is the canvas; this chrome is
+         designed to feel like a small studio instrument sitting over it. -->
+    <aside class="panel" aria-label="Flux controls">
+      <header class="panel__head">
+        <div class="panel__brand">
+          <span class="panel__glyph" aria-hidden="true"></span>
+          <div class="panel__titles">
+            <h1 class="panel__title">FLUX</h1>
+            <p class="panel__subtitle">Flow Field Studio</p>
+          </div>
+        </div>
+        <span id="status-pill" class="status-pill" data-mode="live">Live</span>
+      </header>
+
+      <div class="panel__readout">
+        <div class="readout">
+          <span class="readout__label">Palette</span>
+          <span id="palette-name" class="readout__value">Aurora</span>
+        </div>
+        <div class="readout">
+          <span class="readout__label">Frame</span>
+          <span id="frame-counter" class="readout__value readout__value--mono">0</span>
+        </div>
+        <div class="readout">
+          <span class="readout__label">Seed</span>
+          <span id="seed-value" class="readout__value readout__value--mono">1</span>
+        </div>
+      </div>
+
+      <div class="control">
+        <label class="control__label" for="count-input">
+          Particles <span id="count-value" class="control__num">1800</span>
+        </label>
+        <input
+          id="count-input"
+          class="control__number"
+          type="number"
+          min="200"
+          max="6000"
+          step="100"
+          value="1800"
+          inputmode="numeric"
+          aria-label="Particle count"
+        />
+      </div>
+
+      <div class="control">
+        <label class="control__label" for="speed-input">
+          Speed <span id="speed-value" class="control__num">1.6</span>
+        </label>
+        <input
+          id="speed-input"
+          class="control__range"
+          type="range"
+          min="0.2"
+          max="4"
+          step="0.1"
+          value="1.6"
+        />
+      </div>
+
+      <div class="control">
+        <label class="control__label" for="noise-input">
+          Noise scale <span id="noise-value" class="control__num">0.0024</span>
+        </label>
+        <input
+          id="noise-input"
+          class="control__range"
+          type="range"
+          min="0.0008"
+          max="0.006"
+          step="0.0001"
+          value="0.0024"
+        />
+      </div>
+
+      <div class="control">
+        <label class="control__label" for="palette-select">Palette</label>
+        <div class="select-wrap">
+          <select id="palette-select" class="control__select"></select>
+        </div>
+      </div>
+
+      <div class="panel__actions">
+        <button id="pause-button" type="button" class="btn btn--primary" aria-pressed="false">
+          Pause
+        </button>
+        <button id="reset-button" type="button" class="btn btn--ghost">Reset</button>
+      </div>
+
+      <footer class="panel__foot">
+        Particles advected through a simplex-noise flow field. Seeded and
+        frame-deterministic.
+      </footer>
+    </aside>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

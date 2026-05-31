@@ -1,0 +1,391 @@
+/* style.css — Prism shader scene UI
+   Vendored font, full-bleed canvas, gradient + vignette backdrop, and a
+   glassy control panel. No remote resources are referenced. */
+
+/* ---- vendored font (local woff2, no network) ---- */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/SpaceGrotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../assets/fonts/SpaceGrotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --bg-top: #04121b;
+  --bg-mid: #0a2233;
+  --bg-bottom: #02060b;
+  --ink: #eaf6ff;
+  --ink-dim: #93b3c7;
+  --line: rgba(150, 200, 230, 0.16);
+  --glass: rgba(10, 22, 33, 0.55);
+  --glass-strong: rgba(8, 18, 28, 0.78);
+  --accent: #7ad7ff;
+  --radius: 16px;
+  --shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  --font: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(120% 90% at 50% 12%, var(--bg-mid) 0%, var(--bg-top) 42%, var(--bg-bottom) 100%);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Soft vignette layered over everything (pointer-events off). */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 5;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 1;
+}
+
+/* ---- masthead / brand ---- */
+.masthead {
+  position: fixed;
+  top: 28px;
+  left: 32px;
+  z-index: 10;
+  user-select: none;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+}
+.brand-mark {
+  display: inline-flex;
+  filter: drop-shadow(0 0 10px rgba(122, 215, 255, 0.55));
+}
+.brand-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  color: var(--ink);
+  text-shadow: 0 0 18px rgba(122, 215, 255, 0.35);
+}
+.tagline {
+  margin: 8px 0 0 2px;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  max-width: 280px;
+}
+
+/* ---- control panel ---- */
+.control-panel {
+  position: fixed;
+  top: 26px;
+  right: 26px;
+  z-index: 12;
+  width: 312px;
+  padding: 18px 18px 14px;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.panel-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.panel-collapse {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.panel-collapse:hover {
+  background: rgba(122, 215, 255, 0.12);
+  border-color: var(--accent);
+}
+
+.panel-section {
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+.panel-section:first-of-type {
+  border-top: none;
+  padding-top: 6px;
+}
+.section-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 10px;
+}
+
+/* preset buttons */
+.preset-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.preset-btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-dim);
+  padding: 9px 6px;
+  border-radius: 11px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.preset-btn:hover {
+  color: var(--ink);
+  border-color: rgba(122, 215, 255, 0.5);
+  transform: translateY(-1px);
+}
+.preset-btn.active {
+  color: #04131c;
+  background: linear-gradient(135deg, #9be8ff, #6cc4ff);
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(108, 196, 255, 0.4);
+}
+.active-preset {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+.active-preset strong {
+  color: var(--ink);
+}
+
+/* sliders */
+.slider-row {
+  margin-bottom: 14px;
+}
+.slider-row:last-child {
+  margin-bottom: 2px;
+}
+.slider-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+.slider-label {
+  font-size: 13px;
+  color: var(--ink);
+}
+.slider-value {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  background: rgba(122, 215, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 7px;
+}
+.slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, rgba(122, 215, 255, 0.7), rgba(122, 215, 255, 0.15));
+  outline: none;
+  cursor: pointer;
+}
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #eaf6ff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 10px rgba(122, 215, 255, 0.6);
+}
+.slider-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #eaf6ff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 10px rgba(122, 215, 255, 0.6);
+}
+
+/* wireframe toggle */
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.toggle-btn:hover {
+  border-color: rgba(122, 215, 255, 0.5);
+}
+.toggle-name {
+  letter-spacing: 0.02em;
+}
+.toggle-state {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-dim);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 12px;
+  border-radius: 999px;
+  min-width: 46px;
+  text-align: center;
+}
+.toggle-btn.active {
+  border-color: var(--accent);
+  background: rgba(122, 215, 255, 0.14);
+}
+.toggle-btn.active .toggle-state {
+  color: #04131c;
+  background: linear-gradient(135deg, #9be8ff, #6cc4ff);
+}
+
+.panel-foot {
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: var(--ink-dim);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* collapsed state */
+.control-panel.collapsed .panel-section,
+.control-panel.collapsed .panel-foot {
+  display: none;
+}
+
+/* ---- hint bar ---- */
+.hint-bar {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.hint-bar code {
+  color: var(--accent);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 11.5px;
+}
+.hint-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* ---- responsive ---- */
+@media (max-width: 1024px) {
+  .control-panel {
+    width: 290px;
+  }
+}
+@media (max-width: 640px) {
+  .masthead {
+    top: 18px;
+    left: 18px;
+  }
+  .brand-name {
+    font-size: 18px;
+    letter-spacing: 0.34em;
+  }
+  .tagline {
+    display: none;
+  }
+  .control-panel {
+    top: auto;
+    bottom: 70px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+  .hint-bar {
+    font-size: 11px;
+    bottom: 14px;
+    max-width: 92vw;
+  }
+  .hint-bar code {
+    display: none;
+  }
+}

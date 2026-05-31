@@ -1,0 +1,78 @@
+{
+  "boardTitle": "Cadence",
+  "nextId": 9,
+  "cards": [
+    {
+      "id": "card-001",
+      "title": "Sketch onboarding flow",
+      "description": "Map the three-screen welcome sequence and the empty-state copy a first-time user sees.",
+      "priority": "High",
+      "tag": "Design",
+      "column": "backlog",
+      "order": 0
+    },
+    {
+      "id": "card-002",
+      "title": "Audit color contrast",
+      "description": "Run every text and surface pairing through a WCAG AA check and log the failures.",
+      "priority": "Med",
+      "tag": "Design",
+      "column": "backlog",
+      "order": 1
+    },
+    {
+      "id": "card-003",
+      "title": "Draft weekly changelog",
+      "description": "Summarize shipped work in plain language for the Friday subscriber email.",
+      "priority": "Low",
+      "tag": "Writing",
+      "column": "backlog",
+      "order": 2
+    },
+    {
+      "id": "card-004",
+      "title": "Wire persistence route",
+      "description": "Connect the board to the JSON file API so a reload restores the last saved state.",
+      "priority": "High",
+      "tag": "Engineering",
+      "column": "in-progress",
+      "order": 0
+    },
+    {
+      "id": "card-005",
+      "title": "Tune card hover states",
+      "description": "Add the lift shadow and border accent without introducing layout shift.",
+      "priority": "Med",
+      "tag": "Design",
+      "column": "in-progress",
+      "order": 1
+    },
+    {
+      "id": "card-006",
+      "title": "Set up keyboard focus rings",
+      "description": "Make every interactive control reachable and visible when tabbing through the board.",
+      "priority": "Med",
+      "tag": "Engineering",
+      "column": "done",
+      "order": 0
+    },
+    {
+      "id": "card-007",
+      "title": "Name the columns",
+      "description": "Settle on Backlog, In Progress, and Done after reviewing three naming options.",
+      "priority": "Low",
+      "tag": "Writing",
+      "column": "done",
+      "order": 1
+    },
+    {
+      "id": "card-008",
+      "title": "Pick the accent palette",
+      "description": "Lock the indigo and amber pairing and record the hex values in the design tokens.",
+      "priority": "High",
+      "tag": "Design",
+      "column": "done",
+      "order": 2
+    }
+  ]
+}

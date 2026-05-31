@@ -365,7 +365,8 @@ class SandboxManager:
         command: str,
         env: Optional[Dict[str, str]] = None,
         cwd: Optional[str] = None,
-        user: Optional[str] = None
+        user: Optional[str] = None,
+        timeout: Optional[int] = None
     ) -> Tuple[int, str, str]:
         """
         Execute a command in the container.
@@ -423,7 +424,10 @@ class SandboxManager:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
-            stdout, stderr = await result.communicate()
+            if timeout:
+                stdout, stderr = await asyncio.wait_for(result.communicate(), timeout=timeout)
+            else:
+                stdout, stderr = await result.communicate()
 
             return (
                 result.returncode,
@@ -431,6 +435,13 @@ class SandboxManager:
                 stderr.decode('utf-8', errors='replace')
             )
 
+        except asyncio.TimeoutError:
+            self.logger.error(f"Command timed out after {timeout}s")
+            try:
+                result.kill()
+            except Exception:
+                pass
+            return (-1, "", f"Command timed out after {timeout}s")
         except Exception as e:
             self.logger.error(f"Error executing command: {e}")
             return (-1, "", str(e))

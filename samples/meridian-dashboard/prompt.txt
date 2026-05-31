@@ -1,0 +1,9 @@
+Build "Meridian", an analytics dashboard over global CO2 emissions by country and year. The data is a local JSON file with, per country, a yearly series of total CO2 (million tonnes), CO2 per capita (tonnes), year-over-year change, population, and a region. Load it locally, with no runtime network.
+
+A left sidebar switches two views, "Overview" and "Explorer". Global controls sit atop both: a Region filter (starting on "All regions", also listing each continent), a Year selector (defaulting to the most recent year), and a Metric toggle ("Total" and "Per capita").
+
+Overview shows four KPI cards (total emissions, average per capita, top emitter, and year-over-year change for the selected year) above two charts: a line chart of the chosen metric over time for one country, with a small "Country" picker; and a horizontal bar chart ranking the top countries that year. Render the charts as static SVG so they look identical every load.
+
+Explorer shows a sortable table of every country for the selected year (columns: rank, country, region, and the emissions metrics). Clicking a header sorts by it; clicking again flips direction. A search box filters by country name, the region dropdown narrows to one continent, and a live result count (such as "42 countries") tracks the filters. When nothing matches, show an empty-state message instead of an empty table; a "Clear filters" button restores the full set.
+
+On first load, open Overview with "All regions", the latest year, "Total", and the United States plotted. Make it polished and modern, with clean typography and a responsive layout.

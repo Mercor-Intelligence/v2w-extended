@@ -1,0 +1,139 @@
+[
+  {
+    "depends_on": [],
+    "index": 0,
+    "summary": "Desktop visual capture of the Lumina landing homepage at its settled frozen frame: aurora hero, headline, console preview card, trusted-by strip, feature grid, metrics, and pricing.",
+    "resolution": { "width": 1920, "height": 1080 },
+    "content": [
+      {
+        "objective": "Verify the homepage renders its settled hero with the frozen aurora background, headline, call-to-action buttons, and the floating console preview card at desktop width.",
+        "actions": [
+          "Wait for the hero background and page to finish rendering the settled frame"
+        ],
+        "validations": [
+          "The hero headline reads Run inference at the edge with total observability",
+          "A primary Start free button and a secondary Book a demo button are visible in the hero",
+          "The floating console preview card shows a p95 latency value of 23ms",
+          "A Trusted by teams shipping at the edge strip of company logos is visible below the hero"
+        ]
+      }
+    ],
+    "prototype": { "Homepage": { "fullpage": true, "idx": 0 } }
+  },
+  {
+    "depends_on": [],
+    "index": 1,
+    "summary": "Tablet-width visual capture of the homepage, verifying the responsive layout reflows correctly at 1024px.",
+    "resolution": { "width": 1024, "height": 768 },
+    "content": [
+      {
+        "objective": "Verify the homepage renders correctly at tablet width, with the hero, navigation, and content sections reflowing to the narrower viewport.",
+        "actions": [
+          "Wait for the page to finish rendering the settled frame at tablet width"
+        ],
+        "validations": [
+          "The hero headline and the Start free button are visible",
+          "The feature cards reflow into a narrower grid that fits the tablet width"
+        ]
+      }
+    ],
+    "prototype": { "Homepage Tablet": { "fullpage": true, "idx": 0 } }
+  },
+  {
+    "depends_on": [],
+    "index": 2,
+    "summary": "Mobile-width visual capture of the homepage, verifying the single-column responsive layout and the collapsed navigation at 375px.",
+    "resolution": { "width": 375, "height": 812 },
+    "content": [
+      {
+        "objective": "Verify the homepage renders correctly at mobile width, stacking content into a single column and collapsing the navigation into a hamburger button.",
+        "actions": [
+          "Wait for the page to finish rendering the settled frame at mobile width"
+        ],
+        "validations": [
+          "The header shows a hamburger menu button instead of the full navigation links",
+          "The hero and content sections stack vertically in a single column"
+        ]
+      }
+    ],
+    "prototype": { "Homepage Mobile": { "fullpage": true, "idx": 0 } }
+  },
+  {
+    "depends_on": [],
+    "index": 3,
+    "summary": "Functional check: the Features link in the header scrolls the page to the six-card feature grid section.",
+    "resolution": { "width": 1920, "height": 1080 },
+    "content": [
+      {
+        "objective": "Verify that clicking the Features link in the top navigation moves the page to the Features section, demonstrating a positive in-page navigation scenario.",
+        "actions": [
+          "Click the Features link in the top navigation menu"
+        ],
+        "validations": [
+          "The Features section is visible with the heading Everything you need to run models in production",
+          "A grid of six feature cards is shown, including Low-latency inference, GPU autoscaling, and Live tracing"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [],
+    "index": 4,
+    "summary": "Functional check: the hero Start free button brings the Pricing section with its three plan cards into view.",
+    "resolution": { "width": 1920, "height": 1080 },
+    "content": [
+      {
+        "objective": "Verify that clicking the primary Start free button in the hero brings the Pricing section into view, demonstrating that the main call to action leads to the plans.",
+        "actions": [
+          "Click the Start free button in the hero section"
+        ],
+        "validations": [
+          "The Pricing section is visible with the heading Start free. Scale when you ship.",
+          "Three plan cards are shown: Developer at $0, Team at $99, and Enterprise at Custom",
+          "The Team plan card is marked with a Most popular badge"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [],
+    "index": 5,
+    "summary": "Functional check: the Pricing link in the header scrolls the page to the Pricing section independently of the hero call to action.",
+    "resolution": { "width": 1920, "height": 1080 },
+    "content": [
+      {
+        "objective": "Verify that clicking the Pricing link in the top navigation moves the page to the Pricing section, demonstrating a positive in-page navigation scenario.",
+        "actions": [
+          "Click the Pricing link in the top navigation menu"
+        ],
+        "validations": [
+          "The Pricing section is visible with the heading Start free. Scale when you ship.",
+          "The Developer, Team, and Enterprise plan cards each show a Get started, Start free, or Contact sales button"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [],
+    "index": 6,
+    "summary": "Mobile navigation: the hamburger button opens the full-width menu drawer with the navigation links and the Get started button.",
+    "resolution": { "width": 375, "height": 812 },
+    "content": [
+      {
+        "objective": "Verify that, on a phone-width viewport, clicking the hamburger menu button opens the mobile drawer containing the navigation links and the Get started call to action.",
+        "actions": [
+          "Click the hamburger menu button in the header"
+        ],
+        "validations": [
+          "A full-width navigation drawer is open below the header",
+          "The drawer lists the links Platform, Features, Metrics, Pricing, and Docs",
+          "The drawer contains a Get started button"
+        ]
+      }
+    ],
+    "prototype": { "Mobile Menu": { "fullpage": true, "idx": 0 } }
+  }
+]

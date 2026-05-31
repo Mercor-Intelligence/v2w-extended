@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prism — Real-Time Iridescent Shader</title>
+    <meta
+      name="description"
+      content="Prism: a custom GLSL shader scene. A noise-displaced icosahedron with fresnel iridescence, rendered with Three.js, frozen deterministically for byte-stable capture."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,3 29,25 3,25' fill='none' stroke='%237ad7ff' stroke-width='2'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- Local ES-module map. 'three' and its addons resolve to the vendored
+         files under ./vendor; there is NO runtime CDN reference. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/three.module.js",
+          "three/addons/": "./vendor/three/addons/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="scene" aria-label="Prism shader render"></canvas>
+
+    <!-- Title / brand overlay -->
+    <header class="masthead">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="26" height="26">
+            <polygon points="16,3 29,25 3,25" fill="none" stroke="currentColor" stroke-width="2" />
+          </svg>
+        </span>
+        <span class="brand-name">PRISM</span>
+      </div>
+      <p class="tagline">Real-time iridescent shader study</p>
+    </header>
+
+    <!-- Floating control panel -->
+    <aside id="control-panel" class="control-panel" aria-label="Scene controls">
+      <div class="panel-header">
+        <h2 class="panel-title">Controls</h2>
+        <button id="panel-collapse" class="panel-collapse" type="button" aria-label="Collapse panel" aria-expanded="true">–</button>
+      </div>
+
+      <section class="panel-section">
+        <div class="section-label">Preset</div>
+        <div id="preset-buttons" class="preset-buttons"></div>
+        <p class="active-preset">
+          Active preset: <strong id="active-preset-label">Aurora</strong>
+        </p>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-label">Geometry &amp; Color</div>
+        <div id="sliders" class="sliders"></div>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-label">Render</div>
+        <button id="wireframe-toggle" class="toggle-btn" type="button" aria-pressed="false">
+          <span class="toggle-name">Wireframe</span>
+          <span class="toggle-state">Off</span>
+        </button>
+      </section>
+
+      <p class="panel-foot">Drag to orbit · scroll to zoom</p>
+    </aside>
+
+    <!-- Bottom hint -->
+    <footer class="hint-bar">
+      <span class="hint-dot" aria-hidden="true"></span>
+      <span>Deterministic capture: append <code>?t=2.0&amp;preset=aurora</code> to freeze a frame</span>
+    </footer>
+
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>

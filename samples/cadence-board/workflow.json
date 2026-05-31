@@ -1,0 +1,201 @@
+[
+  {
+    "depends_on": [],
+    "index": 0,
+    "summary": "Capture the seeded Cadence board and confirm the three columns render with their cards and counts.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the board loads with the three lifecycle columns and their seeded cards visible.",
+        "actions": [
+          "Wait for the board to finish loading"
+        ],
+        "validations": [
+          "The Backlog column is visible with a count of 3",
+          "The In Progress column is visible with a count of 2",
+          "The Done column is visible with a count of 3",
+          "The card titled 'Sketch onboarding flow' appears in the Backlog column"
+        ]
+      }
+    ],
+    "prototype": {
+      "Board": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 1,
+    "summary": "Add a new card through the modal and confirm it lands in Backlog with the count incremented.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that adding a card via the Add card modal creates a new card in the Backlog column.",
+        "actions": [
+          "Click the Add card button in the top toolbar",
+          "Type 'Plan launch checklist' into the title input",
+          "Click the Save card button"
+        ],
+        "validations": [
+          "A card titled 'Plan launch checklist' appears in the Backlog column",
+          "The Backlog column count now reads 4"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [
+      1
+    ],
+    "index": 2,
+    "summary": "Move the new card one column to the right into In Progress using its Move button.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the right-pointing Move button on the new card moves it from Backlog into In Progress.",
+        "actions": [
+          "Click the right-pointing Move button on the 'Plan launch checklist' card"
+        ],
+        "validations": [
+          "The card titled 'Plan launch checklist' now appears in the In Progress column",
+          "The card titled 'Plan launch checklist' is no longer in the Backlog column"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [
+      2
+    ],
+    "index": 3,
+    "summary": "Move the same card right again into Done.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the right-pointing Move button again moves the card from In Progress into Done.",
+        "actions": [
+          "Click the right-pointing Move button on the 'Plan launch checklist' card"
+        ],
+        "validations": [
+          "The card titled 'Plan launch checklist' now appears in the Done column",
+          "The card titled 'Plan launch checklist' is no longer in the In Progress column"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [],
+    "index": 4,
+    "summary": "Edit an existing card's title through the editor modal and confirm the card updates in place.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that editing a card updates its visible title after saving. The Card Editor view is captured with the edit modal open and pre-filled.",
+        "actions": [
+          "Click the edit button on the 'Audit color contrast' card in the Backlog column",
+          "Type 'Audit color contrast across themes' into the title input",
+          "Click the Save changes button"
+        ],
+        "validations": [
+          "A card titled 'Audit color contrast across themes' appears in the Backlog column",
+          "No card titled exactly 'Audit color contrast' remains on the board"
+        ]
+      }
+    ],
+    "prototype": {
+      "Card Editor": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 5,
+    "summary": "Filter the board by a tag and confirm only matching cards remain, then clear the filter.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that selecting a tag in the filter narrows the board to cards carrying that tag, and that clearing the filter restores all cards.",
+        "actions": [
+          "Select 'Writing' from the tag filter dropdown in the top toolbar",
+          "Click the Clear filter button"
+        ],
+        "validations": [
+          "After clearing, the card titled 'Sketch onboarding flow' is visible again",
+          "After clearing, the Backlog column count reads 3"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [
+      3
+    ],
+    "index": 6,
+    "summary": "Reload the page and confirm the previously added and moved card is still in Done, proving the board persists in the browser.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that after refreshing the browser the 'Plan launch checklist' card persists in the Done column.",
+        "actions": [
+          "Refresh the page",
+          "Wait for the board to finish loading"
+        ],
+        "validations": [
+          "The card titled 'Plan launch checklist' appears in the Done column after the reload"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [],
+    "index": 7,
+    "summary": "Delete a card and confirm it disappears and the column count decrements.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that deleting a card removes it from its column and decreases that column's count.",
+        "actions": [
+          "Click the delete button on the 'Draft weekly changelog' card in the Backlog column"
+        ],
+        "validations": [
+          "No card titled 'Draft weekly changelog' remains on the board",
+          "The Backlog column count decreases to reflect the removal"
+        ]
+      }
+    ],
+    "prototype": {}
+  }
+]

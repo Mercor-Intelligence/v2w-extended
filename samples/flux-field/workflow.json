@@ -1,0 +1,137 @@
+[
+  {
+    "depends_on": [],
+    "index": 0,
+    "summary": "Visual capture of the frozen Flux artwork on the Aurora palette at the default seed and frame, verifying the deterministic still frame renders with its control panel readouts.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the Flux flow-field renders a frozen still frame on the Aurora palette with the control panel showing the Aurora palette name and the frozen frame readout.",
+        "actions": [
+          "Wait for the flow-field canvas to finish rendering the frozen frame"
+        ],
+        "validations": [
+          "A full-viewport particle flow-field artwork is visible on the canvas",
+          "The control panel displays the palette name Aurora",
+          "The frame counter readout displays 320"
+        ]
+      }
+    ],
+    "prototype": {
+      "Flux Aurora": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 1,
+    "summary": "Visual capture of the frozen Flux artwork on the Ember palette at the default seed and frame, verifying the palette parameter changes the rendered color theme deterministically.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that the Flux flow-field renders a frozen still frame on the Ember palette with the control panel showing the Ember palette name.",
+        "actions": [
+          "Wait for the flow-field canvas to finish rendering the frozen frame"
+        ],
+        "validations": [
+          "A full-viewport particle flow-field artwork is visible on the canvas",
+          "The control panel displays the palette name Ember",
+          "The artwork uses warm amber and orange tones"
+        ]
+      }
+    ],
+    "prototype": {
+      "Flux Ember": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 2,
+    "summary": "Palette selector functionality on the live animation, verifying that choosing Ember updates the displayed palette name.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that selecting the Ember option in the palette selector updates the panel to display the Ember palette name.",
+        "actions": [
+          "Select Ember from the Palette selector dropdown"
+        ],
+        "validations": [
+          "The palette name readout in the control panel displays Ember"
+        ]
+      }
+    ],
+    "prototype": {
+      "Flux Live Controls": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 3,
+    "summary": "Pause and resume control on the live animation, verifying the Pause button toggles its label to Resume when the animation is paused.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that clicking the Pause button pauses the animation and toggles the button label to Resume.",
+        "actions": [
+          "Click the Pause button"
+        ],
+        "validations": [
+          "The button that previously read Pause now reads Resume"
+        ]
+      }
+    ],
+    "prototype": {
+      "Flux Paused": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  },
+  {
+    "depends_on": [],
+    "index": 4,
+    "summary": "Particle-count input on the live animation, verifying that typing a new value into the Particles control and pressing Enter updates the displayed particle count.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that entering a new particle count and pressing Enter updates the displayed particle-count value in the control panel.",
+        "actions": [
+          "Type 3000 into the Particles number input",
+          "Press Enter"
+        ],
+        "validations": [
+          "The particle-count value shown next to the Particles label displays 3000"
+        ]
+      }
+    ],
+    "prototype": {
+      "Flux Particle Count": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
+  }
+]
