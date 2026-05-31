@@ -62,6 +62,3 @@ litellm_config.yaml
 # Temporary files
 *.tmp
 .cache/
-.claude/
-.serena/
-.playwright-mcp/

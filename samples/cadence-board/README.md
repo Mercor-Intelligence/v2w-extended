@@ -53,7 +53,6 @@ samples/cadence-board/
 ├── README.md                     # This file
 ├── prompt.txt                    # The brief (non-engineer voice)
 ├── workflow.json                 # VS-capture + FS functional test spec
-├── .capture.json                 # Screenshot capture spec (Board, Card Editor)
 ├── prototypes/                   # Coordinator-rendered screenshots (VS anchors)
 ├── resources/                    # Vendored source assets + provenance
 │   ├── fonts/
@@ -233,7 +232,7 @@ cd v2w-extended
 pip install -e .
 pip install 'litellm[proxy]'
 
-# 2. Build the pinned sandbox image (Node + Playwright/Chromium)
+# 2. Build the stock sandbox image (Node + Python + Playwright/Chromium + openhands)
 bash docker/build.sh
 
 # 3. Start a LiteLLM proxy that routes the model id to Anthropic Opus.
@@ -259,9 +258,9 @@ cp -r samples/cadence-board/prompt.txt samples/cadence-board/workflow.json \
       datasets/frontend/cadence-board/
 
 # 5. INFERENCE (no prototypes: the model builds blind from prompt.txt + resources).
-#    Records results/frontend/claude_code/claude-opus-4-8/cadence-board/trajectory.json (the chain-of-thought dump).
+#    Records results/frontend/openhands/claude-opus-4-8/cadence-board/trajectory.json (the chain-of-thought dump).
 python3 -m vision2web.cli inference \
-  --framework claude_code --model claude-opus-4-8 \
+  --framework openhands --model claude-opus-4-8 \
   --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
   --sandbox vision2web-sandbox:latest \
   --datasets-dir ./datasets --results-dir ./results \
@@ -283,7 +282,7 @@ Notes:
 - Do not pass `--use-prototypes`: inference stays leakage-free, and the visual judge scores component presence rather than pixel-exact replication.
 - The grader loads prototypes as `prototypes/<name>.jpg` keyed to the `workflow.json` prototype names; this sample already ships them.
 - Invoke the CLI as `python3 -m vision2web.cli` so it uses this checkout's code.
-- The `claude_code` framework needs the `claude` CLI inside the sandbox; the base image does not include it, so add `RUN npm install -g @anthropic-ai/claude-code` to `docker/Dockerfile.sandbox` before step 2 (or run the `openhands` framework instead).
+- The `openhands` framework is pure Python and ships preinstalled in the stock sandbox image, so inference needs no changes to the rest of the repo.
 - On Docker Desktop (macOS/Windows) `host.docker.internal` resolves automatically. On Linux, start the container with `--add-host=host.docker.internal:host-gateway`, or point `--base-url` at a host IP the container can reach.
-- Per-sample scores: `results/frontend/claude_code/claude-opus-4-8/cadence-board/test_results/` (per-component `*_scores.json` for VS; `workflow_*/test_case_*/result.json` for FS).
+- Per-sample scores: `results/frontend/openhands/claude-opus-4-8/cadence-board/test_results/` (per-component `*_scores.json` for VS; `workflow_*/test_case_*/result.json` for FS).
 - To view the reference build instead of running the model: `bash samples/cadence-board/golden_output/start.sh`, then open http://localhost:3000.

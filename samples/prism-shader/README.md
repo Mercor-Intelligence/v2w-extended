@@ -1,4 +1,4 @@
-# Prism — Real-Time Iridescent Shader Scene
+# Prism: Real-Time Iridescent Shader Scene
 
 A single-page WebGL toy that renders an original GLSL shader study: a noise-displaced icosahedron with fresnel rim lighting and shifting prism colors, a twinkling starfield backdrop, mouse-orbit controls, and a glassy control panel. The scene is a pure function of a uniform time value and the controls, so any given URL produces a byte-identical frame, including under headless software rendering (SwiftShader).
 
@@ -44,7 +44,7 @@ samples/prism-shader/
 ├── README.md                     # This file
 ├── prompt.txt                    # Natural-language brief (the agent's input)
 ├── workflow.json                 # VS-capture + functional test spec
-├── prototypes/                   # Empty (.gitkeep) — coordinator renders screenshots
+├── prototypes/                   # Reference screenshots (committed), one per VS-capture group
 ├── resources/                    # Vendored source assets (provenance below)
 │   ├── vendor/
 │   │   ├── three.module.js       # Three.js r0.160.1 ES module
@@ -99,7 +99,7 @@ Then open **http://localhost:3000**. The script static-serves `app/` on port 300
 
 ### Interaction
 - OrbitControls: left-drag to orbit, scroll to zoom (pan disabled, distance clamped). Damping is on live, off when frozen so the captured frame is exact.
-- Control panel sliders: Displacement, Noise Frequency, Hue (shown in degrees), Iridescence — each updates its uniform live and shows its current value.
+- Control panel sliders: Displacement, Noise Frequency, Hue (shown in degrees), Iridescence. Each updates its uniform live and shows its current value.
 - Wireframe toggle with a visible On/Off state.
 - Aurora / Ember / Nebula preset buttons; the active preset is highlighted and named in the panel.
 - Collapsible panel for small screens.
@@ -176,7 +176,7 @@ cd v2w-extended
 pip install -e .
 pip install 'litellm[proxy]'
 
-# 2. Build the pinned sandbox image (Node + Playwright/Chromium)
+# 2. Build the stock sandbox image (Node + Python + Playwright/Chromium + openhands)
 bash docker/build.sh
 
 # 3. Start a LiteLLM proxy that routes the model id to Anthropic Opus.
@@ -202,9 +202,9 @@ cp -r samples/prism-shader/prompt.txt samples/prism-shader/workflow.json \
       datasets/frontend/prism-shader/
 
 # 5. INFERENCE (no prototypes: the model builds blind from prompt.txt + resources).
-#    Records results/frontend/claude_code/claude-opus-4-8/prism-shader/trajectory.json (the chain-of-thought dump).
+#    Records results/frontend/openhands/claude-opus-4-8/prism-shader/trajectory.json (the chain-of-thought dump).
 python3 -m vision2web.cli inference \
-  --framework claude_code --model claude-opus-4-8 \
+  --framework openhands --model claude-opus-4-8 \
   --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
   --sandbox vision2web-sandbox:latest \
   --datasets-dir ./datasets --results-dir ./results \
@@ -226,7 +226,7 @@ Notes:
 - Do not pass `--use-prototypes`: inference stays leakage-free, and the visual judge scores component presence rather than pixel-exact replication.
 - The grader loads prototypes as `prototypes/<name>.jpg` keyed to the `workflow.json` prototype names; this sample already ships them.
 - Invoke the CLI as `python3 -m vision2web.cli` so it uses this checkout's code.
-- The `claude_code` framework needs the `claude` CLI inside the sandbox; the base image does not include it, so add `RUN npm install -g @anthropic-ai/claude-code` to `docker/Dockerfile.sandbox` before step 2 (or run the `openhands` framework instead).
+- The `openhands` framework is pure Python and ships preinstalled in the stock sandbox image, so inference needs no changes to the rest of the repo.
 - On Docker Desktop (macOS/Windows) `host.docker.internal` resolves automatically. On Linux, start the container with `--add-host=host.docker.internal:host-gateway`, or point `--base-url` at a host IP the container can reach.
-- Per-sample scores: `results/frontend/claude_code/claude-opus-4-8/prism-shader/test_results/` (per-component `*_scores.json` for VS; `workflow_*/test_case_*/result.json` for FS).
+- Per-sample scores: `results/frontend/openhands/claude-opus-4-8/prism-shader/test_results/` (per-component `*_scores.json` for VS; `workflow_*/test_case_*/result.json` for FS).
 - To view the reference build instead of running the model: `bash samples/prism-shader/golden_output/start.sh`, then open http://localhost:3000.
