@@ -124,9 +124,5 @@ RUN python3 -m pip install openhands-sdk \
     && python3 -m pip install openhands-workspace \
     && python3 -m pip install openhands-agent-server 
 
-# Install the Claude Code CLI required by claude_agent_sdk for the claude_code framework.
-# claude_agent_sdk spawns the `claude` binary; without it, inference cannot start.
-RUN npm install -g @anthropic-ai/claude-code
-
 # Default command
 CMD ["/bin/bash"]
