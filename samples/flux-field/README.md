@@ -92,7 +92,7 @@ python3 -m http.server 3000 --bind 0.0.0.0   # http://localhost:3000
 - Titled **FLUX** with the subtitle **Flow Field Studio**, styled as a frosted-glass studio instrument.
 - A live status pill: **Live** while animating, **Frozen @ N** in a frozen capture.
 - A three-cell readout strip showing the current **Palette** name, **Frame** counter, and **Seed** value (frame and seed in monospace).
-- **Particles**: a typed number input (200 to 6000, step 100) with the current count shown next to the label. The value commits on Enter or blur, so a GUI agent can set it without dragging.
+- **Particles**: a typed number input (200 to 6000, step 100) with the current count shown next to the label. The value commits on Enter or blur, so a GUI agent can set it without dragging. The starting count scales to the viewport (1800 at 1920x1080, proportionally more on larger displays) so the field stays full rather than sparse on a big screen; the fixed 1920x1080 capture resolution always starts at 1800, so frozen frames stay byte-identical.
 - **Speed**: a range slider (0.2 to 4.0) with the current value shown.
 - **Noise scale**: a range slider (0.0008 to 0.006) with the current value shown; tighter values make tighter swirls.
 - **Palette**: a `<select>` with three named palettes. The current palette name is always shown in the readout strip.

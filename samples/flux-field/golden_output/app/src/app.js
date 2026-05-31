@@ -31,6 +31,12 @@ const DEFAULTS = {
   palette: 'aurora',
 };
 
+// Particles per pixel that reproduces the reference capture (DEFAULTS.count at the
+// frozen 1920x1080 resolution). Live mode scales its starting count to the actual
+// viewport at this density, so the field fills a large display instead of looking
+// empty; the fixed frozen resolution keeps captures byte-identical to the prototypes.
+const REFERENCE_DENSITY = DEFAULTS.count / (FROZEN_WIDTH * FROZEN_HEIGHT);
+
 // Bounds for the interactive controls (also used to clamp typed input).
 const LIMITS = {
   count: { min: 200, max: 6000, step: 100 },
@@ -204,8 +210,18 @@ class FluxApp {
     return { width: cssWidth, height: cssHeight };
   }
 
+  _densityCount(width, height) {
+    // A fixed particle count looks empty on large screens. Scale to the viewport
+    // at the reference density, clamped to the control's range.
+    const target = Math.round(width * height * REFERENCE_DENSITY);
+    return Math.min(LIMITS.count.max, Math.max(LIMITS.count.min, target));
+  }
+
   _runLive() {
     const { width, height } = this._sizeCanvasToWindow();
+    // Fit the starting particle count to this viewport so the field reads at any
+    // display size (1800 at 1920x1080, more on larger screens, fewer on smaller).
+    this.state.count = this._densityCount(width, height);
     this.sim = new FluxSim(width, height, {
       seed: this.state.seed,
       count: this.state.count,
@@ -224,11 +240,17 @@ class FluxApp {
       const dims = this._sizeCanvasToWindow();
       this.sim.width = dims.width;
       this.sim.height = dims.height;
+      // Re-fit the particle count to the resized viewport and update the readout.
+      // Set the count before reset() so the fresh seed spawns exactly the new
+      // count (matching what a fresh load at this size would render).
+      this.state.count = this._densityCount(dims.width, dims.height);
+      this.el.count.value = String(this.state.count);
+      this.el.countValue.textContent = String(this.state.count);
+      this.sim.setCount(this.state.count);
       this.sim.reset(this.state.seed);
       this.sim.setPalette(PALETTES[this.state.paletteKey]);
       this.sim.setSpeed(this.state.speed);
       this.sim.setNoiseScale(this.state.noiseScale);
-      this.sim.setCount(this.state.count);
       this.sim.clear(this.ctx);
       this.displayFrame = 0;
     });
