@@ -50,8 +50,7 @@ class InferenceEngine:
             model=self.config.inference.model,
             base_url=self.config.inference.base_url,
             sandbox_manager=self.sandbox_manager,
-            logger=self.logger,
-            timeout=self.config.inference.timeout
+            logger=self.logger
         )
 
     def _get_project_workspace(self, project: Project) -> Path:
