@@ -190,7 +190,12 @@ function readBoard() {
     // Fresh load: seed the board and persist it so the first render is the
     // deterministic eight-card seed and survives the next reload.
     const seeded = deepCloneBoard(SEED_BOARD);
-    writeBoard(seeded);
+    try {
+      writeBoard(seeded);
+    } catch (_) {
+      // Persisting is best-effort: a quota/blocked write must not stop the
+      // seeded board from rendering for this session.
+    }
     return seeded;
   }
   try {
@@ -198,7 +203,11 @@ function readBoard() {
   } catch (_) {
     // Corrupt JSON: reset to the seed rather than leaving the user stuck.
     const seeded = deepCloneBoard(SEED_BOARD);
-    writeBoard(seeded);
+    try {
+      writeBoard(seeded);
+    } catch (_) {
+      // Best-effort persist; still return the usable in-memory seed.
+    }
     return seeded;
   }
 }
