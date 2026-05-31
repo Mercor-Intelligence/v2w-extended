@@ -53,7 +53,7 @@
     "prototype": {
       "Explorer": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   },
@@ -85,7 +85,7 @@
     "prototype": {
       "Explorer Search": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   },
@@ -116,7 +116,7 @@
     "prototype": {
       "Explorer Region Filter": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   },
@@ -147,7 +147,7 @@
     "prototype": {
       "Explorer Sorted": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   },
@@ -179,7 +179,7 @@
     "prototype": {
       "Explorer Cleared": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   },
@@ -211,7 +211,7 @@
     "prototype": {
       "Explorer Empty State": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   }

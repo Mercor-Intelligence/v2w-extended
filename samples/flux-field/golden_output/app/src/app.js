@@ -150,6 +150,15 @@ class FluxApp {
       }
     });
     this.el.count.addEventListener('change', commitCount);
+    // Mirror the typed value in the readout live, so the displayed count always
+    // matches the input regardless of when the value commits (blur / Enter). The
+    // clamp + simulation update still happen on commit; this only keeps the label
+    // in sync as characters are entered.
+    this.el.count.addEventListener('input', () => {
+      this.el.countValue.textContent = this.el.count.value;
+    });
+    // Select existing content on focus so typing replaces rather than appends.
+    this.el.count.addEventListener('focus', () => this.el.count.select());
 
     this.el.speed.addEventListener('input', () => {
       const value = clamp(parseFloat(this.el.speed.value) || DEFAULTS.speed, LIMITS.speed);

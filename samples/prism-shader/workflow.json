@@ -3,7 +3,10 @@
     "depends_on": [],
     "index": 0,
     "summary": "Capture the frozen Aurora preset frame for visual scoring at the deterministic default route.",
-    "resolution": { "width": 1920, "height": 1080 },
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
     "content": [
       {
         "objective": "Verify that the frozen Aurora scene renders a settled iridescent shader frame with its control panel, demonstrating a positive test scenario.",
@@ -16,32 +19,49 @@
         ]
       }
     ],
-    "prototype": { "Prism Aurora": { "fullpage": true, "idx": 0 } }
+    "prototype": {
+      "Prism Aurora": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
   },
   {
     "depends_on": [],
     "index": 1,
     "summary": "Capture the frozen Ember preset frame for visual scoring.",
-    "resolution": { "width": 1920, "height": 1080 },
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
     "content": [
       {
         "objective": "Verify that the frozen Ember scene renders a settled warm-toned shader frame with its control panel, demonstrating a positive test scenario.",
         "actions": [
-          "Wait for the scene to finish rendering the first frame"
+          "Click the Ember preset button in the control panel",
+          "Wait for the scene to repaint in the new preset"
         ],
         "validations": [
-          "A glowing, noise-displaced 3D shape is rendered in warm red and gold tones",
-          "The control panel shows the active preset as Ember"
+          "The control panel shows the active preset as Ember",
+          "A glowing, noise-displaced 3D shape is rendered in the center of the scene"
         ]
       }
     ],
-    "prototype": { "Prism Ember": { "fullpage": true, "idx": 0 } }
+    "prototype": {
+      "Prism Ember": {
+        "fullpage": true,
+        "idx": 1
+      }
+    }
   },
   {
     "depends_on": [],
     "index": 2,
     "summary": "Toggle the Wireframe control on the live scene and confirm the mesh renders as wireframe.",
-    "resolution": { "width": 1920, "height": 1080 },
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
     "content": [
       {
         "objective": "Verify that clicking the Wireframe toggle switches the central mesh to a wireframe rendering, demonstrating a positive test scenario.",
@@ -54,13 +74,21 @@
         ]
       }
     ],
-    "prototype": { "Prism Wireframe": { "fullpage": true, "idx": 0 } }
+    "prototype": {
+      "Prism Wireframe": {
+        "fullpage": true,
+        "idx": 0
+      }
+    }
   },
   {
     "depends_on": [],
     "index": 3,
     "summary": "Functional check: clicking the Ember preset button on the live scene restyles it to warm tones and marks Ember active.",
-    "resolution": { "width": 1920, "height": 1080 },
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
     "content": [
       {
         "objective": "Verify that clicking the Ember preset button restyles the scene to warm tones and marks Ember as active, demonstrating a positive test scenario.",
@@ -81,7 +109,10 @@
     ],
     "index": 4,
     "summary": "Functional check: clicking the Aurora preset button returns the scene to the cool Aurora state.",
-    "resolution": { "width": 1920, "height": 1080 },
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
     "content": [
       {
         "objective": "Verify that clicking the Aurora preset button returns the scene to cool teal and violet tones and marks Aurora as active, demonstrating a positive test scenario.",

@@ -155,9 +155,18 @@ function renderSpark(svg, points, opts) {
 const counters = Array.from(document.querySelectorAll("[data-target]"));
 const reveals = Array.from(document.querySelectorAll(".reveal"));
 
+// Run the count-up animation at most once, whichever trigger fires first
+// (metrics scrolled into view, or the no-scroll fallback below).
+let countersStarted = false;
+const startCounters = () => {
+  if (countersStarted) return;
+  countersStarted = true;
+  counters.forEach(runCounter);
+};
+
 if (FROZEN || reduceMotion || !("IntersectionObserver" in window)) {
   reveals.forEach((el) => el.classList.add("is-visible"));
-  counters.forEach(runCounter);
+  startCounters();
 } else {
   const revObserver = new IntersectionObserver(
     (entries, obs) => {
@@ -178,7 +187,7 @@ if (FROZEN || reduceMotion || !("IntersectionObserver" in window)) {
       (entries, obs) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            counters.forEach(runCounter);
+            startCounters();
             obs.disconnect();
           }
         });
@@ -187,8 +196,18 @@ if (FROZEN || reduceMotion || !("IntersectionObserver" in window)) {
     );
     mObserver.observe(metricsBand);
   } else {
-    counters.forEach(runCounter);
+    startCounters();
   }
+
+  // Capture / no-scroll fallback: a full-page screenshot (and any viewer who does
+  // not scroll) must still see every section. Shortly after load, reveal any
+  // sections the scroll observer has not yet shown and run the counters so the
+  // settled page is complete. The scroll-triggered entrance still plays earlier
+  // when the user actually scrolls.
+  window.setTimeout(() => {
+    reveals.forEach((el) => el.classList.add("is-visible"));
+    startCounters();
+  }, 1200);
 }
 
 /* ---------- Feature card pointer glow ---------- */
