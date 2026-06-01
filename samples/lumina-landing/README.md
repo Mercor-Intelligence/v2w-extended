@@ -238,3 +238,27 @@ Notes:
 - On Docker Desktop (macOS/Windows) `host.docker.internal` resolves automatically. On Linux, start the container with `--add-host=host.docker.internal:host-gateway`, or point `--base-url` at a host IP the container can reach.
 - Per-sample scores: `results/frontend/openhands/claude-opus-4-8/lumina-landing/test_results/` (per-component `*_scores.json` for VS; `workflow_*/test_case_*/result.json` for FS).
 - To view the reference build instead of running the model: `bash samples/lumina-landing/golden_output/start.sh`, then open http://localhost:3000.
+
+## Reproduce the golden score (VS / FS = 100)
+
+To score this sample's reference build (`golden_output`) instead of a model build, do
+the one-time setup from the section above (clone, `pip install -e .`, `docker/build.sh`,
+start the proxy), then point a results dir at the golden output and evaluate it:
+
+```bash
+S=lumina-landing
+mkdir -p "datasets/frontend/$S"
+cp -r "samples/$S/prompt.txt" "samples/$S/workflow.json" \
+      "samples/$S/resources" "samples/$S/prototypes" "datasets/frontend/$S/"
+mkdir -p "results_golden/frontend/golden/claude-opus-4-8/$S"
+cp -a "samples/$S/golden_output/." "results_golden/frontend/golden/claude-opus-4-8/$S/"
+python3 -m vision2web.cli evaluate \
+  --results-dir ./results_golden --datasets-dir ./datasets \
+  --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
+  --gui-agent-model claude-opus-4-8 --vlm-judge-model claude-opus-4-8 \
+  --sandbox vision2web-sandbox:latest --max-workers 1 --projects "frontend/$S"
+python3 -m vision2web.cli analyze --results-dir ./results_golden --datasets-dir ./datasets
+```
+
+Expected: **VS 100 / FS 100** for this sample. The grader is non-deterministic, so per
+the acceptance bar run the eval up to 3 times; a passing run shows FS = 100 and VS > 80.
