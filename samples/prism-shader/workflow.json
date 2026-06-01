@@ -15,7 +15,10 @@
         ],
         "validations": [
           "A glowing, noise-displaced 3D shape is rendered in the center of the scene",
-          "The control panel shows the active preset as Aurora"
+          "The control panel shows the active preset as Aurora",
+          "The control panel contains exactly three preset buttons labeled \"Aurora\", \"Ember\", and \"Nebula\"",
+          "The control panel shows a slider labeled \"Displacement\" with the value 0.42",
+          "The control panel shows a row labeled \"Hue\" whose readout is displayed in degrees and reads \"166°\""
         ]
       }
     ],
@@ -70,7 +73,9 @@
         ],
         "validations": [
           "The central 3D shape now renders as a wireframe mesh of edges rather than a solid surface",
-          "The Wireframe toggle shows the On state"
+          "The Wireframe toggle shows the On state",
+          "The control that switches the mesh to wireframe is a button labeled \"Wireframe\" whose state label reads \"Off\" before the click and \"On\" after the click",
+          "After toggling Wireframe On, the control panel still shows the active preset as Aurora"
         ]
       }
     ],
@@ -122,6 +127,30 @@
         "validations": [
           "The control panel shows the active preset as Aurora",
           "The scene colors return to cool teal and violet tones"
+        ]
+      }
+    ],
+    "prototype": {}
+  },
+  {
+    "depends_on": [],
+    "index": 5,
+    "summary": "Functional check: the third named preset \"Nebula\" exists and applies its exact look values when clicked.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that a third named preset button \"Nebula\" exists and, when clicked, marks Nebula as active and applies its exact control readouts, demonstrating a positive test scenario.",
+        "actions": [
+          "Click the Nebula preset button in the control panel"
+        ],
+        "validations": [
+          "The control panel contains a preset button labeled \"Nebula\" alongside \"Aurora\" and \"Ember\"",
+          "After clicking Nebula, the control panel shows the active preset as Nebula",
+          "After clicking Nebula, the row labeled \"Hue\" reads \"266°\"",
+          "After clicking Nebula, the slider labeled \"Iridescence\" reads 0.65"
         ]
       }
     ],

@@ -16,7 +16,9 @@
         "validations": [
           "The Overview view is shown with the heading Overview",
           "Four KPI cards are visible, including Total emissions 2023 and Top emitter 2023",
-          "The Top emitter 2023 card shows China",
+          "The Total emissions 2023 card shows the value 33,576 with the unit Mt CO2",
+          "The Top emitter 2023 card shows China with the value 12,172 Mt CO2",
+          "The Year-over-year card shows +1.4%",
           "A line chart titled Emissions over time and a bar chart titled Top emitters are both visible"
         ]
       }
@@ -46,7 +48,9 @@
           "The Explorer view is shown with the heading Explorer",
           "A data table is visible with column headers Country, Region, and Total CO2 (Mt)",
           "The result count reads 42 countries",
-          "The table shows data rows for multiple countries"
+          "The table shows data rows for multiple countries",
+          "The first data row in the table is China",
+          "The second data row in the table is United States"
         ]
       }
     ],
@@ -142,6 +146,18 @@
           "The first data row is Qatar",
           "The Per capita value in the first row is the largest in that column"
         ]
+      },
+      {
+        "objective": "Verify that clicking the same Per capita column header a second time flips the sort to ascending, putting the smallest value in the top row.",
+        "actions": [
+          "Click the Explorer button in the left sidebar",
+          "Click the Per capita (t) column header",
+          "Click the Per capita (t) column header again"
+        ],
+        "validations": [
+          "The Per capita (t) column header shows an ascending sort indicator",
+          "The first data row is Kenya"
+        ]
       }
     ],
     "prototype": {
@@ -203,6 +219,7 @@
         ],
         "validations": [
           "An empty-state message reading No matching countries is shown",
+          "The empty-state message includes the exact text No results found for \"zzzz\". Try a different search or clear the filters.",
           "The table has no data rows",
           "The result count reads 0 countries"
         ]
@@ -214,5 +231,32 @@
         "idx": 1
       }
     }
+  },
+  {
+    "depends_on": [
+      1
+    ],
+    "index": 7,
+    "summary": "Search by ISO code to confirm the search box also matches a country's three-letter code, not just its name.",
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "content": [
+      {
+        "objective": "Verify that typing a country's ISO code into the search box filters the table to that single matching country.",
+        "actions": [
+          "Click the Explorer button in the left sidebar",
+          "Type 'JPN' into the Search by country input",
+          "Press Enter"
+        ],
+        "validations": [
+          "The table shows a single row for Japan",
+          "The result count reads 1 country",
+          "No country other than Japan is shown in the table"
+        ]
+      }
+    ],
+    "prototype": {}
   }
 ]
