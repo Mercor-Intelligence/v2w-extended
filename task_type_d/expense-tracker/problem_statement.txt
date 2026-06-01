@@ -1,0 +1,21 @@
+<summary> Build an Expense Tracker using React + Zustand + Tailwind CSS. </summary>
+
+<core_features> Core features:
+
+- Add an expense with a description, amount, category, and date from a form that appends it to the expense list
+- Edit an existing expense to update its description, amount, category, or date
+- Delete an expense, removing it from the expense list
+- Filter the expense list by category and by month, and switch between a List view and a Summary view
+- Track a monthly budget per category and flag any category whose spend exceeds its budget in the Summary view
+
+</core_features>
+
+<requirements>
+
+All shared state must be managed with Zustand
+
+Styling must use Tailwind utility classes; no external component libraries
+
+Handle empty states and basic input validation
+
+No backend or authentication required; all data lives in memory </requirements>

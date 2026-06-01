@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "After adding an expense with description 'Coffee', amount '4.50', and category 'Food', the text 'Coffee' is visible in the expense list."
+  },
+  {
+    "id": "2",
+    "title": "After adding 3 expenses, exactly 3 expense entries are visible in the list."
+  },
+  {
+    "id": "3",
+    "title": "After editing an expense's description from 'Coffee' to 'Latte', the text 'Latte' is visible in the list and 'Coffee' is not."
+  },
+  {
+    "id": "4",
+    "title": "After deleting an expense, that expense's description is no longer visible anywhere in the list."
+  },
+  {
+    "id": "5",
+    "title": "After deleting all expenses, an empty state message is visible and no expense entries are present in the list."
+  },
+  {
+    "id": "6",
+    "title": "After submitting the add form with an empty description field, the expense count in the list does not increase."
+  },
+  {
+    "id": "7",
+    "title": "After submitting the add form with an amount of 0, the expense count does not increase and a visible validation message is shown."
+  },
+  {
+    "id": "8",
+    "title": "After adding one 'Food' expense and one 'Transport' expense then filtering by category 'Food', only the 'Food' expense is visible in the list."
+  },
+  {
+    "id": "9",
+    "title": "After switching to the Summary view, a total for the 'Food' category is visible reflecting the sum of all Food expenses."
+  },
+  {
+    "id": "10",
+    "title": "After Food expenses exceed the Food monthly budget, an over-budget indicator is visible for the Food category in the Summary view."
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1.1",
+    "title": "All must-have outcome checklist items pass the agent verifier run.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "Functional Correctness" }
+  },
+  {
+    "id": "1.2",
+    "title": "No console.error or unhandled promise rejections appear in the browser log during the agent verifier session.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "Functional Correctness" }
+  },
+  {
+    "id": "1.3",
+    "title": "Renders a visible error or feedback message when the user submits invalid input.",
+    "annotations": { "type": "negative hli verifier", "importance": "must have", "criterion": "Functional Correctness" }
+  },
+  {
+    "id": "2.1",
+    "title": "Zustand store (or equivalent for the selected stack) is used for all shared state across components.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "2.2",
+    "title": "Components are decomposed into units with distinct responsibilities; no single component file exceeds approximately 150 lines.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "2.3",
+    "title": "Tailwind utility classes are used throughout for styling.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "2.4",
+    "title": "Uses inline styles to apply styling instead of Tailwind utility classes.",
+    "annotations": { "type": "negative hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "2.5",
+    "title": "Imports or uses an external component library such as MUI, Chakra, or Ant Design.",
+    "annotations": { "type": "negative hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "2.6",
+    "title": "Manages shared application state in component-local useState rather than the designated state library.",
+    "annotations": { "type": "negative hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "2.7",
+    "title": "Calls React hooks conditionally or inside loops, violating the rules of hooks.",
+    "annotations": { "type": "negative hli verifier", "importance": "must have", "criterion": "Technical Implementation" }
+  },
+  {
+    "id": "3.1",
+    "title": "Empty state UI is present in the source and renders when the collection is empty.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "UX & Accessibility" }
+  },
+  {
+    "id": "3.2",
+    "title": "Interactive elements use semantic HTML tags such as button, input, and label rather than div or span with click handlers.",
+    "annotations": { "type": "positive hli verifier", "importance": "must have", "criterion": "UX & Accessibility" }
+  },
+  {
+    "id": "3.3",
+    "title": "Uses non-semantic div or span elements with onClick handlers in place of button or input elements.",
+    "annotations": { "type": "negative hli verifier", "importance": "must have", "criterion": "UX & Accessibility" }
+  },
+  {
+    "id": "4.1",
+    "title": "Spacing and sizing use Tailwind's default scale consistently; no arbitrary pixel values in className strings.",
+    "annotations": { "type": "positive hli verifier", "importance": "nice to have", "criterion": "Design Fidelity" }
+  },
+  {
+    "id": "4.2",
+    "title": "Transition or animation classes are applied to state changes such as item addition, deletion, or filter switch.",
+    "annotations": { "type": "positive hli verifier", "importance": "nice to have", "criterion": "Design Fidelity" }
+  },
+  {
+    "id": "4.3",
+    "title": "Typography has clear visual hierarchy; heading elements or larger text weights distinguish section titles from body content.",
+    "annotations": { "type": "positive hli verifier", "importance": "nice to have", "criterion": "Design Fidelity" }
+  }
+]
