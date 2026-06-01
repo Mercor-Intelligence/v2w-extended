@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useStore } from '../store'
 import { CATEGORIES } from '../constants'
 import { monthOf } from '../utils/format'
@@ -14,6 +14,16 @@ export default function Filters() {
     const seen = new Set(expenses.map((e) => monthOf(e.date)).filter(Boolean))
     return Array.from(seen).sort().reverse()
   }, [expenses])
+
+  // Reset the month filter when its selected month no longer exists (e.g. all
+  // of that month's expenses were deleted). Without this, filterMonth retains a
+  // stale value that matches no <option>, and ExpenseList/SummaryView keep
+  // filtering by the now-empty month and show nothing.
+  useEffect(() => {
+    if (filterMonth !== 'All' && !months.includes(filterMonth)) {
+      setFilterMonth('All')
+    }
+  }, [filterMonth, months, setFilterMonth])
 
   const select = 'rounded-md border border-slate-300 px-3 py-2 text-sm'
   const labelCls = 'text-sm font-medium text-slate-700'
