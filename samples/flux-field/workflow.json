@@ -2,21 +2,20 @@
   {
     "depends_on": [],
     "index": 0,
-    "summary": "Visual capture of the frozen Flux artwork on the Aurora palette at the default seed and frame, verifying the deterministic still frame renders with its control panel readouts.",
+    "summary": "Visual capture of the live Flux flow-field on the default Aurora palette, verifying the artwork and control panel render.",
     "resolution": {
       "width": 1920,
       "height": 1080
     },
     "content": [
       {
-        "objective": "Verify that the Flux flow-field renders a frozen still frame on the Aurora palette with the control panel showing the Aurora palette name and the frozen frame readout.",
+        "objective": "Verify that the Flux flow-field renders a full-viewport particle artwork on the Aurora palette, with the control panel showing the Aurora palette name.",
         "actions": [
-          "Wait for the flow-field canvas to finish rendering the frozen frame"
+          "Wait a few seconds for the flow-field canvas to paint"
         ],
         "validations": [
           "A full-viewport particle flow-field artwork is visible on the canvas",
-          "The control panel displays the palette name Aurora",
-          "The frame counter readout displays 320"
+          "The control panel displays the palette name Aurora"
         ]
       }
     ],
@@ -30,28 +29,28 @@
   {
     "depends_on": [],
     "index": 1,
-    "summary": "Visual capture of the frozen Flux artwork on the Ember palette at the default seed and frame, verifying the palette parameter changes the rendered color theme deterministically.",
+    "summary": "Visual capture of the Flux flow-field after switching to the Ember palette.",
     "resolution": {
       "width": 1920,
       "height": 1080
     },
     "content": [
       {
-        "objective": "Verify that the Flux flow-field renders a frozen still frame on the Ember palette with the control panel showing the Ember palette name.",
+        "objective": "Verify that selecting the Ember palette repaints the flow-field artwork and the control panel shows the Ember palette name.",
         "actions": [
-          "Wait for the flow-field canvas to finish rendering the frozen frame"
+          "Select Ember from the Palette selector dropdown",
+          "Wait for the canvas to repaint in the new palette"
         ],
         "validations": [
-          "A full-viewport particle flow-field artwork is visible on the canvas",
           "The control panel displays the palette name Ember",
-          "The artwork uses warm amber and orange tones"
+          "A full-viewport particle flow-field artwork is visible on the canvas"
         ]
       }
     ],
     "prototype": {
       "Flux Ember": {
         "fullpage": true,
-        "idx": 0
+        "idx": 1
       }
     }
   },

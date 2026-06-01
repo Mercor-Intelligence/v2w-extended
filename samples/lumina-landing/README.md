@@ -21,7 +21,7 @@ This vanilla HTML/CSS/JS application delivers:
 
 | Field          | Value                                                                                          |
 | -------------- | ---------------------------------------------------------------------------------------------- |
-| CDA level      | Level L1: Static Surface                                                                       |
+| CDA level      | L2: Interactive Frontend                                                                       |
 | V2W type       | `frontend` (single page) with a natural-language `prompt.txt`, so it runs from a brief         |
 | Metrics        | VS (visual score, graded on layout, hierarchy, motion, polish, and originality) plus a light FS (GUI-agent) pass over the nav links, the hero CTA, and the mobile menu |
 | Rendering note | Authored to run under software WebGL (`chromium --use-gl=swiftshader`) with byte-stable frozen frames; falls back to a CSS gradient if WebGL is unavailable |

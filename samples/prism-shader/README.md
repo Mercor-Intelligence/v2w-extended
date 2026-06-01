@@ -18,8 +18,8 @@ This vanilla HTML/CSS/JS application delivers:
 
 | Field          | Value                                                        |
 | -------------- | ------------------------------------------------------------ |
-| CDA track      | Design sub-track B: WebGL / 3D                               |
-| V2W type       | `webpage` (single page) with a natural-language `prompt.txt` |
+| CDA level      | L2: Interactive Frontend (Design sub-track B: WebGL / 3D)                               |
+| V2W type       | `frontend` (single page) with a natural-language `prompt.txt` |
 | Metrics        | VS (visual score, graded 0-5 incl. originality/motion/polish) plus a light FS (GUI-agent) pass over the controls |
 | Rendering note | Authored to run under software WebGL (`chromium --use-gl=swiftshader`) with byte-stable frozen frames |
 
