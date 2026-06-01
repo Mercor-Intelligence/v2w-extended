@@ -33,6 +33,4 @@ export const useStore = create((set) => ({
 
   deleteExpense: (id) =>
     set((state) => ({ expenses: state.expenses.filter((e) => e.id !== id) })),
-
-  clearAll: () => set({ expenses: [] }),
 }))
