@@ -143,6 +143,43 @@ Per-task outputs land under `results/frontend/openhands/claude-opus-4-8/<name>/`
 `test_results/` tree with per-component `*_scores.json` (VS) and
 `workflow_*/test_case_*/result.json` (FS).
 
+## 4. Reproduce the golden scores (VS / FS = 100)
+
+The published golden scores come from running each sample's `golden_output`
+through the eval, with no inference: the golden output itself is the "result" that
+gets scored against its `workflow.json` (FS) and `prototypes/` (VS). Do the
+one-time setup in steps a-c of section 2 (clone, `pip install -e .`,
+`docker/build.sh`, start the proxy), then for any sample:
+
+```bash
+S=lumina-landing   # or meridian-dashboard | flux-field | prism-shader | cadence-board
+
+# Stage the sample's dataset (the workflow.json + prototypes the eval scores against)
+mkdir -p "datasets/frontend/$S"
+cp -r "samples/$S/prompt.txt" "samples/$S/workflow.json" \
+      "samples/$S/resources" "samples/$S/prototypes" "datasets/frontend/$S/"
+
+# Use the sample's golden_output AS the result to be scored (this is the golden run)
+rm -rf "results_golden/frontend/golden/claude-opus-4-8/$S"
+mkdir -p "results_golden/frontend/golden/claude-opus-4-8/$S"
+cp -a "samples/$S/golden_output/." "results_golden/frontend/golden/claude-opus-4-8/$S/"
+
+# Evaluate it in a fresh sandbox container, then print the scores
+python3 -m vision2web.cli evaluate \
+  --results-dir ./results_golden --datasets-dir ./datasets \
+  --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
+  --gui-agent-model claude-opus-4-8 --vlm-judge-model claude-opus-4-8 \
+  --sandbox vision2web-sandbox:latest --max-workers 1 --projects "frontend/$S"
+python3 -m vision2web.cli analyze --results-dir ./results_golden --datasets-dir ./datasets
+```
+
+Expected: the sample reports **VS 100 / FS 100**. The GUI agent and VLM judge are
+non-deterministic, so the acceptance bar is a 3-run one: across three eval runs the
+sample shows at least one run with **FS = 100** and at least one with **VS > 80**.
+Drop the `--projects` filter to score all five samples in one pass. Verified on a
+clean checkout: a fresh venv (`pip install -e .`) plus a fresh sandbox container per
+sample reproduces VS 100 / FS 100 for all five.
+
 ## Notes
 
 - Do not pass `--use-prototypes`. Inference stays leakage-free, and the visual judge

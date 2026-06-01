@@ -17,7 +17,9 @@
           "The Backlog column is visible with a count of 3",
           "The In Progress column is visible with a count of 2",
           "The Done column is visible with a count of 3",
-          "The card titled 'Sketch onboarding flow' appears in the Backlog column"
+          "The card titled 'Sketch onboarding flow' appears in the Backlog column and shows a 'High' priority pill and a 'Design' tag",
+          "The In Progress column contains exactly two cards: 'Wire persistence route' and 'Tune card hover states'",
+          "The Done column contains exactly three cards: 'Set up keyboard focus rings', 'Name the columns', and 'Pick the accent palette'"
         ]
       }
     ],
@@ -68,7 +70,9 @@
         ],
         "validations": [
           "The card titled 'Sketch onboarding flow' now appears in the In Progress column",
-          "The card titled 'Sketch onboarding flow' is no longer in the Backlog column"
+          "The card titled 'Sketch onboarding flow' is no longer in the Backlog column",
+          "After the move, the Backlog column count reads 2",
+          "After the move, the In Progress column count reads 3"
         ]
       }
     ],
@@ -90,7 +94,9 @@
         ],
         "validations": [
           "The card titled 'Wire persistence route' now appears in the Done column",
-          "The card titled 'Wire persistence route' is no longer in the In Progress column"
+          "The card titled 'Wire persistence route' is no longer in the In Progress column",
+          "After the move, the In Progress column count reads 1",
+          "After the move, the Done column count reads 4"
         ]
       }
     ],
@@ -163,6 +169,8 @@
           "Click the Clear filter button"
         ],
         "validations": [
+          "While the 'Writing' filter is active, exactly two cards are visible on the whole board: 'Draft weekly changelog' in the Backlog column and 'Name the columns' in the Done column",
+          "While the 'Writing' filter is active, the Backlog column count reads 1, the In Progress column count reads 0, and the Done column count reads 1",
           "After clearing, the card titled 'Sketch onboarding flow' is visible again",
           "After clearing, the Backlog column count reads 3"
         ]
@@ -189,7 +197,9 @@
           "Wait for the board to finish loading"
         ],
         "validations": [
-          "The card titled 'Persistence check' still appears in the Backlog column after the reload"
+          "The card titled 'Persistence check' still appears in the Backlog column after the reload",
+          "After the reload, the Backlog column count reads 4, the In Progress column count reads 2, and the Done column count reads 3",
+          "After the reload, the seeded card titled 'Wire persistence route' is still present in the In Progress column"
         ]
       }
     ],

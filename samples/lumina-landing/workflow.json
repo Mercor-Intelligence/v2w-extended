@@ -17,7 +17,9 @@
           "The hero headline reads Run inference at the edge with total observability",
           "A primary Start free button and a secondary Book a demo button are visible in the hero",
           "The floating console preview card shows a p95 latency value of 23ms",
-          "A Trusted by teams shipping at the edge strip of company logos is visible below the hero"
+          "A Trusted by teams shipping at the edge strip of company logos is visible below the hero",
+          "The metrics band shows exactly four figures with their values: 12.4B, 23ms, 99.98%, and 34+",
+          "The floating console preview card shows a requests / s value of 48,210"
         ]
       }
     ],
@@ -98,7 +100,8 @@
         ],
         "validations": [
           "The Features section is visible with the heading Everything you need to run models in production",
-          "A grid of six feature cards is shown, including Low-latency inference, GPU autoscaling, and Live tracing"
+          "A grid of six feature cards is shown, including Low-latency inference, GPU autoscaling, and Live tracing",
+          "The six feature card titles are exactly Low-latency inference, GPU autoscaling, Live tracing, Security and compliance, Global edge regions, and Versioned rollouts"
         ]
       }
     ],
@@ -121,7 +124,8 @@
         "validations": [
           "The Pricing section is visible with the heading Start free. Scale when you ship.",
           "Three plan cards are shown: Developer at $0, Team at $99, and Enterprise at Custom",
-          "The Team plan card is marked with a Most popular badge"
+          "The Team plan card is marked with a Most popular badge",
+          "The Developer plan button reads Start free, the Team plan button reads Get started, and the Enterprise plan button reads Contact sales"
         ]
       }
     ],
@@ -143,7 +147,8 @@
         ],
         "validations": [
           "The Pricing section is visible with the heading Start free. Scale when you ship.",
-          "The Developer, Team, and Enterprise plan cards each show a Get started, Start free, or Contact sales button"
+          "The Developer, Team, and Enterprise plan cards each show a Get started, Start free, or Contact sales button",
+          "The three plans are named, in order, Developer priced $0 / month, Team priced $99 / month, and Enterprise priced Custom"
         ]
       }
     ],
@@ -166,7 +171,8 @@
         "validations": [
           "A full-width navigation drawer is open below the header",
           "The drawer lists the links Platform, Features, Metrics, Pricing, and Docs",
-          "The drawer contains a Get started button"
+          "The drawer contains a Get started button",
+          "Clicking the Features link inside the open drawer closes the drawer"
         ]
       }
     ],

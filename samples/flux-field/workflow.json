@@ -15,7 +15,10 @@
         ],
         "validations": [
           "A full-viewport particle flow-field artwork is visible on the canvas",
-          "The control panel displays the palette name Aurora"
+          "The control panel displays the palette name Aurora",
+          "The control panel shows a live Frame counter and a Seed value in its readout strip",
+          "A status indicator in the control panel reads Live while the animation is running",
+          "The control panel includes a Speed slider and a Noise scale slider, each showing its current numeric value"
         ]
       }
     ],
@@ -69,7 +72,8 @@
           "Select Ember from the Palette selector dropdown"
         ],
         "validations": [
-          "The palette name readout in the control panel displays Ember"
+          "The palette name readout in the control panel displays Ember",
+          "The palette selector lists three palettes named Aurora, Ember, and Mono"
         ]
       }
     ],

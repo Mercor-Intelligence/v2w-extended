@@ -62,3 +62,7 @@ litellm_config.yaml
 # Temporary files
 *.tmp
 .cache/
+
+# Keep vendored sample libraries (e.g. simplex-noise) despite the lib/ rule above
+!samples/**/lib/
+!samples/**/lib/**
