@@ -1,232 +1,187 @@
-# Vision2Web: A Hierarchical Benchmark for Visual Website Development with Agent Verification
+# v2w-extended
 
-![Web Development](https://img.shields.io/badge/Task-Web%20Development-red)
-![Multi-Modal](https://img.shields.io/badge/Task-Multi--Modal-red)
-![Vision2Web](https://img.shields.io/badge/Dataset-Vision2Web-blue)
-<div align='center'>
+Vision2Web, extended with a focused set of self-contained frontend sample tasks.
 
-[[🏠 Project Page](https://vision2web-bench.github.io/)] [[📖 arXiv Paper](https://arxiv.org/abs/2603.26648)] [[📊 Dataset](https://huggingface.co/datasets/zai-org/Vision2Web)] [[📮 Submit Results](https://huggingface.co/datasets/zai-org/Vision2Web-Leaderboard)]
+This repository builds on [Vision2Web](https://vision2web-bench.github.io/) (a hierarchical benchmark for visual website development with agent verification, [paper](https://arxiv.org/abs/2603.26648)) and adds **five self-contained Level 2 (Interactive Frontend) sample tasks** under [`samples/`](samples/), together with the stock harness for building and scoring them.
 
-</div>
+Each sample is a client-side web app built from a plain-English brief, shipped with a reference build, reference screenshots, and a machine-checkable test spec. Every sample lives entirely under its own `samples/<name>/` folder and runs on the stock harness and the stock `vision2web-sandbox` image; nothing in a sample changes the rest of the repo.
 
 <p align="center">
-    <img src="./docs/images/vision2web-cover.png" width="85%">
+  <img src="./docs/images/vision2web-cover.png" width="80%">
 </p>
 
-Vision2Web is a comprehensive benchmark designed to evaluate multimodal coding agents on visual website development tasks spanning the full software development lifecycle.
+## How a build is scored
 
----
+Vision2Web is organized into three progressive levels:
 
-## 🔥 News
+- **Level 1: Static Webpage** generate responsive webpages from multi-device UI prototypes. Metric: Visual Score (VS).
+- **Level 2: Interactive Frontend** build multi-page interactive frontends from prototypes plus a textual spec. Metrics: Visual Score (VS) and Functional Score (FS).
+- **Level 3: Full-Stack Website** build full-stack systems from a requirements document and prototypes. Metrics: VS and FS.
 
-* **`2026.04.30`** 🎉 Vision2Web is accepted by ICML 2026 as a Spotlight Paper!
-* **`2026.03.30`** 🌟 We released Vision2Web with comprehensive evaluation tools and leaderboard!
+All five samples in this repo are **Level 2 (Interactive Frontend)**. Two scores come out of evaluation:
 
-## 👀 Introduction to Vision2Web
+- **Functional Score (FS):** a WebVoyager-style GUI agent drives the built app and checks the `workflow.json` validations (clicks a nav link, sorts a table, opens a drawer, and so on).
+- **Visual Score (VS):** a vision-language judge segments the built page and scores component presence and layout against the `prototypes/*.jpg` anchors.
 
-Vision2Web is a hierarchical benchmark for evaluating multimodal coding agents on end-to-end visual website development, measuring their ability to integrate UI understanding, requirements reasoning, interactive logic, and full-stack implementation in long-horizon scenarios.
+## Task shape
 
-<p align="center">
-  <img src="./docs/images/compare_bench.png" width="70%">
-</p>
+Each `samples/<name>/` folder has the same layout. This is the V2W task contract:
 
-The benchmark is organized into three progressive levels:
+| Path | What it is |
+| ---- | ---------- |
+| `prompt.txt` | The natural-language brief. This is the only thing the agent is given at inference time. |
+| `workflow.json` | The test spec. An ordered list of groups; each group is either a visual-score capture (it names a `prototype` and a viewport `resolution`) or a functional-score check (`"prototype": {}`, a GUI-agent action plus validations). |
+| `prototypes/*.jpg` | Reference screenshots of the intended result, one per visual-score group. The visual judge compares the model's build against these. File names match the `prototype` keys in `workflow.json`. |
+| `resources/` | Source assets the build is allowed to use (fonts, icons, images, data, vendored libraries), each with provenance recorded in the task README. |
+| `golden_output/` | The reference build. `start.sh` serves `app/` on `http://localhost:3000` with no build step and no network at runtime. |
+| `golden_trajectory.json` | A reference trajectory: the files a successful agent run produces. |
+| `README.md` | The per-task write-up: what it is, how to run it, the resource provenance, and the full inference/evaluation/analysis recipe. |
 
-- **Level 1 – Static Webpage:** Generate responsive, executable webpages from multi-device UI prototypes (desktop / tablet / mobile).  
-  *Metric:* Visual Score (VS)
+All five tasks are V2W type `frontend`: client-side only, built blind from `prompt.txt`, with no prototypes shown to the model at inference time (leakage-free).
 
-- **Level 2 – Interactive Frontend:** Develop multi-page interactive frontends with coherent navigation flows from multiple prototypes and textual specifications.  
-  *Metrics:* Visual Score (VS) + Functional Score (FS)
+## The five sample tasks
 
-- **Level 3 – Full-Stack Website:** Build complete full-stack systems from structured requirement documents and visual prototypes, handling state management and backend logic.  
-  *Metrics:* Visual Score (VS) + Functional Score (FS)
+| Task | One line | Highlights |
+| ---- | -------- | ---------- |
+| [`lumina-landing`](samples/lumina-landing/README.md) | Marketing landing page for an edge-AI inference and observability product. | Raw-WebGL aurora hero (hand-written GLSL), scroll count-up metrics and reveals, six feature cards, three-tier pricing, mobile drawer, deterministic `?frame=N` freeze. |
+| [`meridian-dashboard`](samples/meridian-dashboard/README.md) | Analytics dashboard over global CO2 emissions by country and year. | Sidebar Overview/Explorer views, Region/Year/Metric controls, four KPI cards, static SVG line and bar charts, a sortable and searchable table with empty-state and clear-filters. Local JSON, no network. |
+| [`flux-field`](samples/flux-field/README.md) | Full-window flow-field particle animation, a generative-art studio. | Thousands of noise-driven particles with fading trails, a floating panel (Particles, Speed, Noise scale, Palette, Pause, Reset, live frame and seed), three palettes, seeded `?seed=&palette=&frame=` reproducibility. |
+| [`prism-shader`](samples/prism-shader/README.md) | Three.js real-time 3D shader toy with a glassy control panel. | Iridescent noise-displaced icosahedron with custom vertex and fragment shaders, fresnel rim glow, orbit and zoom, starfield, sliders plus a Wireframe toggle and Aurora/Ember/Nebula presets, address-driven freeze. Three.js vendored locally. |
+| [`cadence-board`](samples/cadence-board/README.md) | Browser-only personal Kanban board. | Backlog / In Progress / Done columns with counts, cards with urgency pill and tag, add/edit/delete and Move-button column changes, tag filter, and localStorage persistence with a seeded default board. No server, no database. |
 
-Evaluation is conducted via a workflow-based agent verification paradigm that combines GUI agent verifiers for functional correctness and VLM-based judges for visual fidelity, enabling scalable and implementation-agnostic assessment across increasing levels of complexity.
+Each task README has its own deeper write-up, feature list, determinism notes, and a full resource-provenance table.
 
----
-
-## 📊 Benchmark Statistics
-
-Vision2Web comprises **193 tasks** spanning 16 subcategories across 4 major domains (E-Commerce, SaaS, Content, and Public Service), supported by **918 prototype images** and **1,255 functional test cases**.
-
-<table align="center">
-<tr>
-<td align="center" width="50%">
-  <img src="./docs/images/task_distribution.png" width="100%"/>
-</td>
-
-<td align="center" width="50%">
-  <img src="./docs/images/test_case_distribution.png" width="100%"/><br/><br/>
-  <img src="./docs/images/compare_task.png" width="80%"/>
-</td>
-</tr>
-</table>
-
-
-## 📥 Dataset
-
-### License
-
-Vision2Web is licensed under CC-BY-NC-SA-4.0 and is intended for academic research only. Commercial use in any form is prohibited.
-
-### Download
-
-The dataset is organized in the following structure:
+## Repository layout
 
 ```
-datasets/
-├── webpage/              # Level 1: Static Webpage (100 tasks)
-├── frontend/             # Level 2: Interactive Frontend (66 tasks)
-└── website/              # Level 3: Full-Stack Website (27 tasks)
+v2w-extended/
+├── samples/<name>/      # the five sample tasks (prompt.txt, workflow.json, prototypes/, resources/, golden_output/, README.md)
+├── vision2web/          # the harness package; invoke via `python3 -m vision2web.cli`
+├── docker/build.sh      # builds the vision2web-sandbox:latest image
+├── datasets/            # staging layout the harness discovers (you create this; see below)
+└── results/             # inference and evaluation outputs (generated)
 ```
 
-Each task directory contains:
-- `prototypes/`: UI prototype images (desktop/tablet/mobile)
-- `resources/`: Multimedia assets (images, icons, videos, fonts)
-- `workflow.json`: Test workflow specification
-- `prompt.txt`: Textual requirements (Level 2 only)
-- `prd.md`: Requirement Document (Level 3 only)
+## Installation
 
-## 🚀 Installation
-
-### Prerequisites
-
-- Python 3.8+
-- Docker
-
-### Install Vision2Web
+Prerequisites: Python 3.8+ and Docker running.
 
 ```bash
-# Clone repository
-git clone https://github.com/zai-org/Vision2Web.git
-cd Vision2Web
-
-# Install package
+git clone https://github.com/Mercor-Intelligence/v2w-extended.git
+cd v2w-extended
 pip install -e .
+pip install 'litellm[proxy]'
+bash docker/build.sh        # builds the vision2web-sandbox:latest image (Node + Python + Playwright/Chromium + openhands)
 ```
 
-## 🔧 Quick Start
+## 1. Spin up a website locally
 
-### Step 1: Build Docker Sandbox
-
-The Docker sandbox provides isolated environments for running inference and evaluation:
+No build step, no network. Pick any task and serve its reference build:
 
 ```bash
-cd docker
-bash build.sh
+bash samples/lumina-landing/golden_output/start.sh      # then open http://localhost:3000
 ```
 
-This builds the `vision2web-sandbox:latest` image with all necessary dependencies.
+Swap `lumina-landing` for `meridian-dashboard`, `flux-field`, `prism-shader`, or `cadence-board`. Each `start.sh` serves that task's `app/` on port 3000 with the Python standard library (with an `npx serve` fallback). Stop it with Ctrl-C.
 
-### Step 2: Configure LiteLLM Proxy (Recommended)
+The deterministic tasks accept a freeze parameter for byte-stable captures, for example `http://localhost:3000/?frame=240` (lumina), `?seed=1&frame=320&palette=aurora` (flux), `?t=6.0&preset=aurora` (prism). See each task README for the exact parameters.
 
-For consistent model routing and API compatibility, we recommend using [LiteLLM](https://github.com/BerriAI/litellm) as a proxy:
+## 2. Run inference on the samples
+
+Inference runs the agent inside the Docker sandbox to build each app from `prompt.txt` alone. Use the `openhands` framework: it ships in the stock sandbox image and needs no changes to the repo. Prerequisites: the install step above, Docker running, and an Anthropic API key.
 
 ```bash
-# Install LiteLLM
-pip install litellm[proxy]
+# a. Start a LiteLLM proxy that maps the model id to Anthropic Opus.
+#    Put your real key in the env var only; litellm_config.yaml stays secret-free.
+cat > litellm_config.yaml <<'YAML'
+model_list:
+  - model_name: claude-opus-4-8
+    litellm_params:
+      model: anthropic/claude-opus-4-8
+      api_key: os.environ/ANTHROPIC_API_KEY
+general_settings:
+  master_key: sk-v2w-local-proxy
+litellm_settings:
+  drop_params: true
+  request_timeout: 3600
+YAML
+ANTHROPIC_API_KEY=sk-ant-YOUR-KEY litellm --config litellm_config.yaml --host 0.0.0.0 --port 4000 &
 
-# Start LiteLLM proxy with your configuration
-litellm --config litellm_config.yaml
+# b. Stage the tasks into the datasets/ layout the harness discovers
+for s in lumina-landing meridian-dashboard flux-field prism-shader cadence-board; do
+  mkdir -p "datasets/frontend/$s"
+  cp -r "samples/$s/prompt.txt" "samples/$s/workflow.json" \
+        "samples/$s/resources" "samples/$s/prototypes" "datasets/frontend/$s/"
+done
+
+# c. Inference: the model builds blind from prompt.txt + resources (no prototypes).
+#    Writes results/frontend/openhands/claude-opus-4-8/<name>/ (the build + trajectory.json chain of thought).
+python3 -m vision2web.cli inference \
+  --framework openhands --model claude-opus-4-8 \
+  --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
+  --sandbox vision2web-sandbox:latest \
+  --datasets-dir ./datasets --results-dir ./results \
+  --max-workers 1
 ```
 
-**For Claude Code**: When using the Claude Code framework, we route all claude-* model identifiers to the target evaluation model via the LiteLLM proxy.
+To run a single task, add `--projects frontend/lumina-landing` (repeatable, comma separated).
 
+## 3. Run evaluation on the samples
 
-### Step 3: Run Inference
-
-Execute inference to generate project implementations:
+Evaluation drives each built app and scores it. The GUI agent (FS) and the visual judge (VS) reach their models through the same proxy.
 
 ```bash
-bash scripts/run_inference.sh
+# Evaluate everything inference produced
+python3 -m vision2web.cli evaluate \
+  --results-dir ./results --datasets-dir ./datasets \
+  --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
+  --gui-agent-model claude-opus-4-8 --vlm-judge-model claude-opus-4-8 \
+  --sandbox vision2web-sandbox:latest \
+  --framework openhands --max-workers 1
+
+# Print the VS / FS summary table
+python3 -m vision2web.cli analyze --results-dir ./results --datasets-dir ./datasets
 ```
 
-**Key Parameters**:
-- `--framework`: Agent framework (`claude_code` or `openhands`)
-- `--model`: Model identifier (should match LiteLLM configuration)
-- `--base-url`: API base URL (use LiteLLM proxy endpoint)
-- `--task`: Task type filter (`webpage`, `frontend`, or `website`)
-- `--projects`: Specific project names to run (optional)
-- `--max-workers`: Number of concurrent inference tasks
+Per-task outputs land under `results/frontend/openhands/claude-opus-4-8/<name>/`: `trajectory.json` (the inference chain of thought), `evaluation_result.json`, and a `test_results/` tree with per-component `*_scores.json` (VS) and `workflow_*/test_case_*/result.json` (FS).
 
-**Results Structure**:
-```
-results/
-└── webpage|frontend|website/
-    └── framework/
-        └── model/
-            └── project_name/
-                ├── start.sh              # Deployment script
-                ├── prototypes/           # Copied prototypes
-                └── resources/            # Copied resources
-```
+## Reproduce the golden scores (optional)
 
-### Step 4: Run Evaluation
-
-After inference completes, run automated evaluation:
+The reference build in each `golden_output/` is calibrated to score well against its own `workflow.json` (FS) and `prototypes/` (VS), with no inference: the golden output itself is the "result" that gets scored. After the install step and starting the proxy (section 2a), for any sample:
 
 ```bash
-bash scripts/run_evaluation.sh
+S=lumina-landing   # or meridian-dashboard | flux-field | prism-shader | cadence-board
+
+mkdir -p "datasets/frontend/$S"
+cp -r "samples/$S/prompt.txt" "samples/$S/workflow.json" \
+      "samples/$S/resources" "samples/$S/prototypes" "datasets/frontend/$S/"
+
+rm -rf "results_golden/frontend/golden/claude-opus-4-8/$S"
+mkdir -p "results_golden/frontend/golden/claude-opus-4-8/$S"
+cp -a "samples/$S/golden_output/." "results_golden/frontend/golden/claude-opus-4-8/$S/"
+
+python3 -m vision2web.cli evaluate \
+  --results-dir ./results_golden --datasets-dir ./datasets \
+  --api-key sk-v2w-local-proxy --base-url http://host.docker.internal:4000 \
+  --gui-agent-model claude-opus-4-8 --vlm-judge-model claude-opus-4-8 \
+  --sandbox vision2web-sandbox:latest --max-workers 1 --projects "frontend/$S"
+python3 -m vision2web.cli analyze --results-dir ./results_golden --datasets-dir ./datasets
 ```
 
-Or use the CLI with separate models for different evaluation tasks:
+The GUI agent and VLM judge are non-deterministic, so the acceptance bar is a 3-run one: across three eval runs the sample shows at least one run with **FS = 100** and at least one with **VS > 80**. Drop the `--projects` filter to score all five samples in one pass.
 
-**Key Parameters**:
-- `--gui-agent-model`: Model for GUI testing agent (executes test workflows)
-- `--vlm-judge-model`: Model for visual prototype comparison
-- `--model`: Filter for inference model results to evaluate
-- `--framework`: Filter for framework results to evaluate
-- `--task`: Filter for task type to evaluate
+## Notes
 
-**Evaluation Outputs**:
-```
-project_name/
-└── test_results/
-    ├── workflow_i/
-    │   └── test_case_i/
-    │       ├── result.json
-    │       └── screenshots/
-    └── prototypes/
-        ├── desktop_actual.jpg
-        └── desktop_scores.json
-```
+- Do not pass `--use-prototypes`. Inference stays leakage-free, and the visual judge scores component presence rather than pixel-exact replication.
+- Invoke the CLI as `python3 -m vision2web.cli` so it runs from this checkout. Convenience wrappers `scripts/run_inference.sh`, `scripts/run_evaluation.sh`, and `scripts/run_analysis.sh` are also available.
+- On Docker Desktop (macOS/Windows) `host.docker.internal` resolves automatically. On Linux, start the container with `--add-host=host.docker.internal:host-gateway`, or point `--base-url` at a host IP the container can reach.
+- To read a reference build without running the model, use `start.sh` from section 1.
 
-### Step 5: Analyze Results
+## License
 
-Generate summary statistics and visualizations:
+This repository extends Vision2Web, which is licensed under CC-BY-NC-SA-4.0 and intended for academic research only. Commercial use in any form is prohibited.
 
-```bash
-bash scripts/run_analysis.sh
-```
-
-### Step 6: Submit Leaderboard Results
-
-You can run evaluation locally to test your agent's performance. **Official leaderboard scores are evaluated by the maintainers** using the latest VLM Judge and GUI Agent.
-
-To submit to the leaderboard, you only need to submit your **inference outputs**. Please follow the submission guidelines in the [leaderboard repository](https://huggingface.co/datasets/zai-org/Vision2Web-Leaderboard).
-
-## 📊 Experimental Results
-- Overall Performance
-<p align="center">
-    <img src="./docs/images/all_results.png" width="95%">
-</p>
-
-- Performance across Page Size
-<p align="center">
-    <img src="./docs/images/height_performance.png" width="55%">
-</p>
-
-- Performance across Task Categories
-<p align="center">
-    <img src="./docs/images/task_performance.png" width="55%">
-</p>
-
-- Performance across Test Cases
-<p align="center">
-    <img src="./docs/images/test_case_performance.png" width="55%">
-</p>
-
-## ✒️ Citation
+## Citation
 
 If you find Vision2Web helpful for your research, please consider citing:
 
